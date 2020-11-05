@@ -1,4 +1,5 @@
-#Marble Maze
+# Marble Maze
+
 GOAL:
 to create a program for the adafruit ItsyBitsy nrf52840 + SSD1327 OLED Monochrome display with inputs from a 6 dof IMU + a five directional button
 
