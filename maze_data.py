@@ -33,10 +33,15 @@ class Maze:
         self.marble = Marble(random.randint(0, 15)*8, random.randint(0, 15)*8) #placed randomly, for now
         self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
         self.speed = 0 #Starts as none, will represent pixels per second
-    def move_marble(self):
-        if self.direction != None:
-            #change_x = math.sin(self.direction*2*math.pi)*self.speed
-            #change_y = math.cos(self.direction*2*math.pi)*self.speed
-            #self.marble.x += change_x
-            #self.marble.y += change_y
-            self.marble.move(self.direction, self.speed)
+    def move_marble(self, tilt):
+        if abs(tilt[0]) > 0:
+            if tile[0] > 0:
+                self.direction = 'right'
+            else:
+                self.direction = 'left'
+        self.speed = rounded(tilt[i])
+        #change_x = math.sin(self.direction*2*math.pi)*self.speed
+        #change_y = math.cos(self.direction*2*math.pi)*self.speed
+        #self.marble.x += change_x
+        #self.marble.y += change_y
+        self.marble.move(self.direction, self.speed)
