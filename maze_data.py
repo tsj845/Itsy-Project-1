@@ -37,5 +37,5 @@ class Maze:
         if self.direction != None and self.speed != None:
             change_x = math.sin(self.direction*2*math.pi)*self.speed
             change_y = math.cos(self.direction*2*math.pi)*self.speed
-            self.marble.x += change_x
-            self.marble.y += change_y
+            self.marble.sprite.x += change_x
+            self.marble.sprite.y += change_y
