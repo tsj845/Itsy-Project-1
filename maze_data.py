@@ -18,9 +18,11 @@ class Marble:
         self.sprite = Circle(x, y, 8)
     def move(self, direction, step):
         if direction == 'updown':
-            self.sprite.y -= step
+            self.sprite.y += step
+            self.y += step
         elif direction == 'leftright':
             self.sprite.x += step
+            self.x += step
 
 def inte(fl):
     return int(str(fl).split('.')[0])
