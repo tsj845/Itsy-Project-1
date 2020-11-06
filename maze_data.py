@@ -17,14 +17,10 @@ class Marble:
         self.y = y
         self.sprite = Circle(x, y, 8)
     def move(self, direction, step):
-        if direction == 'up':
+        if direction == 'updown':
             self.sprite.y -= step
-        elif direction == 'down':
-            self.sprite.y += step
-        elif direction == 'right':
-            self.sprite.x += 1
-        else:
-            self.sprite.x -= 1
+        elif direction == 'leftright':
+            self.sprite.x += step
 
 def inte(fl):
     return int(str(fl).split('.')[0])
@@ -35,12 +31,12 @@ class Maze:
         self.height = height
         self.marble = Marble(random.randint(0, 15)*8, random.randint(0, 15)*8) #placed randomly, for now
         self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
-        self.speed = 1 #Starts as none, will represent pixels per second
+        self.speed = 1 #Placeholder of 1, will represent pixels per second
     def move_marble(self):
-        if self.direction != None and self.speed != None:
+        if self.direction != None:
             change_x = math.sin(self.direction*2*math.pi)*self.speed
             change_y = math.cos(self.direction*2*math.pi)*self.speed
             change_x = inte(change_x)
             change_y = inte(change_y)
-            self.marble.sprite.x += change_x
-            self.marble.sprite.y += change_y
+            self.marble.move("leftright", change_x)
+            self.marble.move("updown", change_y)
