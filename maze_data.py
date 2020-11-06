@@ -26,16 +26,21 @@ class Marble:
         else:
             self.sprite.x -= 1
 
+def inte(fl):
+    return int(str(fl).split('.')[0])
+            
 class Maze:
     def __init__(self, width, height):
         self.width = width
         self.height = height
         self.marble = Marble(random.randint(0, 15)*8, random.randint(0, 15)*8) #placed randomly, for now
         self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
-        self.speed = None #Starts as none, will represent pixels per second
+        self.speed = 1 #Starts as none, will represent pixels per second
     def move_marble(self):
         if self.direction != None and self.speed != None:
             change_x = math.sin(self.direction*2*math.pi)*self.speed
             change_y = math.cos(self.direction*2*math.pi)*self.speed
+            change_x = inte(change_x)
+            change_y = inte(change_y)
             self.marble.sprite.x += change_x
             self.marble.sprite.y += change_y
