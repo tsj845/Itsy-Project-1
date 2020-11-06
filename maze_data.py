@@ -39,7 +39,7 @@ class Maze:
                 self.direction = 'right'
             else:
                 self.direction = 'left'
-        self.speed = rounded(tilt[i])
+        self.speed = int(str(rounded(tilt[0]+(1 * tilt[0]/abs(tilt[0])))).split('.')[0])
         #change_x = math.sin(self.direction*2*math.pi)*self.speed
         #change_y = math.cos(self.direction*2*math.pi)*self.speed
         #self.marble.x += change_x
