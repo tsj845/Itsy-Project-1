@@ -1,5 +1,7 @@
 import random
 import displayio
+from adafruit_display_shapes.circle import Circle
+from adafruit_display_shapes.rect import Rect
 
 ## we need five sprites (ball, verticle passage, horizontal passage, corner, and a solid wall)
 # we only need one corner slot in the sheet because we can flip it (might change it later if it turns out to be too difficult)
@@ -12,7 +14,7 @@ class Marble:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.sprite = displayio.TileGrid(sprites, tile_width=16, tile_height=16)
+        self.sprite = Circle(x, y, 8)
     def move(self, direction, step):
         if direction == 'up':
             self.sprite.y -= step
