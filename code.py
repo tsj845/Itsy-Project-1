@@ -3,6 +3,8 @@ import displayio
 import adafruit_ssd1327
 import busio
 import time
+import pers
+import maze_data
 
 displayio.release_displays()
 
