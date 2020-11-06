@@ -3,30 +3,23 @@ import displayio
 import adafruit_ssd1327
 import busio
 import time
+import pers
+import maze_data
 
-displayio.release_displays()
+display = pers.display
+sense = pers.sensor
 
-# This pinout works on a Metro and may need to be altered for other boards.
-i2c_bus = busio.I2C(board.SCL, board.SDA)
-display_bus = displayio.I2CDisplay(i2c_bus, device_address=0x3D)
-time.sleep(1)
-display = adafruit_ssd1327.SSD1327(display_bus, width=128, height=128)
+class storeage():
+  pass
 
-m = displayio.Bitmap(128, 128, 2)
-p = displayio.Palette(2)
-p[0] = 0x000000
-p[1] = 0xFFFFFF
+app = storage()
 
-for row in range(128):
-    for col in range(128):
-        m[row, col] = 1
+app.tilt = [0, 0]
 
-tile_grid = displayio.TileGrid(m, pixel_shader=p)
+maze = maze_data.maze()
 
-g = displayio.Group()
-
-g.append(tile_grid)
-
-display.show(g)
-
-time.sleep(10)
+for i in range(60):
+  app.tilt[0] += sense.rotation[0]
+  app.tilt[1] += sense.rotation[1]
+  maze.move(app.tilt)
+  time.sleep(0.25)
