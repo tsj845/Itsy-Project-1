@@ -1,4 +1,5 @@
 import random
+import math
 import displayio
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
@@ -34,4 +35,7 @@ class Maze:
         self.speed = None #Starts as none, will represent pixels per second
     def move_marble(self):
         if self.direction != None and self.speed != None:
-            #TODO: Impliment moving of marble (probably will involve speed being hypotenuse of right triangle, direction being angle, cos and sin to calculate legs)
+            change_x = math.sin(self.direction*2*math.pi)*self.speed
+            change_y = math.cos(self.direction*2*math.pi)*self.speed
+            self.marble.x += change_x
+            self.marble.y += change_y
