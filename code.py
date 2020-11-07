@@ -9,7 +9,7 @@ import maze_data
 display = pers.display
 sense = pers.sensor
 
-class storeage():
+class storage():
   pass
 
 app = storage()
