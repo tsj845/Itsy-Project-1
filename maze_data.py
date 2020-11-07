@@ -27,12 +27,13 @@ class Marble:
             self.sprite.x -= 1
 
 class Maze:
-    def __init__(self, width, height):
+    def __init__(self, width, height, g):
         self.width = width
         self.height = height
         self.marble = Marble(random.randint(0, 15)*8, random.randint(0, 15)*8) #placed randomly, for now
         self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
         self.speed = 0 #Starts as none, will represent pixels per second
+        g.append(self.marble.sprite)
     def move_marble(self, tilt):
         direc1 = 'up'
         direc2 = 'up'
