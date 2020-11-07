@@ -8,6 +8,7 @@ import maze_data
 
 display = pers.display
 sense = pers.sensor
+g = pers.g
 
 class storeage():
   pass
