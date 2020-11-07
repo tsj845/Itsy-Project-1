@@ -1,6 +1,6 @@
 import random
 import math
-import displayio
+from displayio import *
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
 
