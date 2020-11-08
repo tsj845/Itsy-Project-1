@@ -13,7 +13,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 ### these can be un-commented after Tristan is able to attach the IMU to the itsy ###
 ######################################
 from adafruit_lsm6ds import LSM6DS33#
-sensor = LSM6DS33.LSM6DS(i2c)###############
+sensor = LSM6DS33.LSM6DS33(i2c)###############
 ######################################
 ### do not un-comment the above lines ###
 
