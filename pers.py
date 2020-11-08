@@ -8,8 +8,6 @@ displayio.release_displays()
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
-i2c.try_lock()
-
 from adafruit_lsm6ds import LSM6DS33#
 sensor = LSM6DS33.LSM6DS(i2c)
 
