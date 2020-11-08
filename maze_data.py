@@ -17,13 +17,13 @@ class Marble:
         self.y = y
         self.sprite = Circle(x, y, 8, fill=0xFFFFFF)
     def move(self, direction, step):
-        if direction == 'up' and self.sprite.y > 0:
+        if direction == 'up' and self.sprite.y > 5:
             self.sprite.y -= step
         elif direction == 'down' and self.sprite.y < 100:
             self.sprite.y += step
         elif direction == 'right' and self.sprite.x < 100:
             self.sprite.x += step
-        elif direction == 'left' and self.sprite.x > 0:
+        elif direction == 'left' and self.sprite.x > 5:
             self.sprite.x -= step
 
 class Maze:
@@ -41,9 +41,9 @@ class Maze:
         speed2 = 0
         if abs(tilt[0]) > 0:
             if tilt[0] > 0:
-                self.direction = 'right'
+                direc1 = 'right'
             else:
-                self.direction = 'left'
+                direc1 = 'left'
             speed1 = round(tilt[0]+(1 * tilt[0]/abs(tilt[0])))
         if abs(tilt[1]) > 0:
             if tilt[1] > 0:
