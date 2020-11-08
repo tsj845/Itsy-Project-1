@@ -22,9 +22,9 @@ class Marble:
         elif direction == 'down':
             self.sprite.y += step
         elif direction == 'right':
-            self.sprite.x += 1
+            self.sprite.x += step
         else:
-            self.sprite.x -= 1
+            self.sprite.x -= step
 
 class Maze:
     def __init__(self, width, height, g):
@@ -50,7 +50,7 @@ class Maze:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
-            speed2 = int(str(round(tilt[1]+(1 * tilt[1]/abs(tilt[1])))).split('.')[1])
+            speed2 = int(str(round(tilt[1]+(1 * tilt[1]/abs(tilt[1])))).split('.')[0])
         #change_x = math.sin(self.direction*2*math.pi)*self.speed
         #change_y = math.cos(self.direction*2*math.pi)*self.speed
         #self.marble.x += change_x
