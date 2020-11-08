@@ -23,9 +23,6 @@ class Marble:
         elif direction == 'leftright':
             self.sprite.x += step
             self.x += step
-
-def inte(fl):
-    return int(str(fl).split('.')[0])
             
 class Maze:
     def __init__(self, width, height):
@@ -36,9 +33,7 @@ class Maze:
         self.speed = 1 #Placeholder of 1, will represent pixels per second
     def move_marble(self):
         if self.direction != None:
-            change_x = math.sin(self.direction*2*math.pi)*self.speed
-            change_y = math.cos(self.direction*2*math.pi)*self.speed
-            change_x = inte(change_x)
-            change_y = inte(change_y)
+            change_x = round(math.sin(self.direction*2*math.pi)*self.speed)
+            change_y = round(math.cos(self.direction*2*math.pi)*self.speed)
             self.marble.move("leftright", change_x)
             self.marble.move("updown", change_y)
