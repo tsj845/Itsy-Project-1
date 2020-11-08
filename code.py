@@ -17,11 +17,7 @@ app = storeageC()
 
 app.tilt = [0, 0]
 
-<<<<<<< HEAD
-maze = maze_data.Maze(128, 128, g)
-=======
 maze = maze_data.maze(128, 128, g)
->>>>>>> c003bac094573cc24524a596767da8c613186229
 
 for i in range(60):
   app.tilt[0] -= sense.gyro[0]
