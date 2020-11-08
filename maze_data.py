@@ -20,16 +20,17 @@ class Marble:
         elif direction == 'down' and self.sprite.y < 120:
             self.sprite.y += step
         elif direction == 'right' and self.sprite.x < 120:
-            self.sprite.x += 1
+            self.sprite.x += step
         elif direction == 'left' and self.sprite.x > 5:
-            self.sprite.x -= 1
+            self.sprite.x -= step
 
 class Maze:
     def __init__(self, width, height, g):
         self.width = width
         self.height = height
         self.marble = Marble(10, 10)
-    def move_marble(self, tilt):
+        g.append(self.marble.sprite)
+    def move(self, tilt):
         direc1 = 'up'
         direc2 = 'up'
         speed1 = 0
