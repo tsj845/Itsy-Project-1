@@ -10,10 +10,10 @@ display = pers.display
 sense = pers.sensor
 g = pers.g
 
-class storeage():
+class storeageC():
   pass
 
-app = storage()
+app = storeageC()
 
 app.tilt = [0, 0]
 
