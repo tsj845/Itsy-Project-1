@@ -8,7 +8,7 @@ displayio.release_displays()
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
-i2c.try_lock()
+#i2c.try_lock()
 
 ### these can be un-commented after Tristan is able to attach the IMU to the itsy ###
 ######################################
