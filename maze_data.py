@@ -34,17 +34,17 @@ class Maze:
         direc2 = 'up'
         speed1 = 0
         speed2 = 0
-        if abs(tilt[0]) > 0:
+        if abs(tilt[0]) > 3:
             if tilt[0] > 0:
                 direc1 = 'right'
             else:
                 direc1 = 'left'
-            speed1 = round(tilt[0]+(1 * tilt[0]/abs(tilt[0])))
-        if abs(tile[1]) > 0:
+            speed1 = abs(round(tilt[0]))
+        if abs(tile[1]) > 3:
             if tit[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
-            speed2 = round(tilt[1]+(1 * tilt[1]/abs(tilt[1])))
+            speed2 = abs(round(tilt[1]))
         self.marble.move(direc1, speed1)
         self.marble.move(direc2, speed2)
