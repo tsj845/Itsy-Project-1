@@ -1,14 +1,14 @@
 import board
-import displayio
+from displayio import Group
 import adafruit_ssd1327
 import busio
 import time
 import pers
 import maze_data
 
-display = pers.display
 sense = pers.sensor
-g = pers.g
+g = Group()
+pers.display.show(g)
 
 class storeageC():
   pass
