@@ -1,3 +1,14 @@
+# ciruit python libraries unable to be put into github directly:
+goto: https://circuitpython.org/libraries
+download the most recent file
+you will need:
+adafruit_bus_device
+adafruit_lsm6ds
+adafruit_register
+
+# Instructions:
+drag these files into the "lib" folder on the Isty
+
 # Marble Maze
 
 GOAL:
