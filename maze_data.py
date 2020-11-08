@@ -34,7 +34,7 @@ class Maze:
         self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
         self.speed = 0 #Starts as none, will represent pixels per second
         g.append(self.marble.sprite)
-    def move_marble(self, tilt):
+    def move(self, tilt):
         direc1 = 'up'
         direc2 = 'up'
         speed1 = 0
@@ -44,13 +44,13 @@ class Maze:
                 self.direction = 'right'
             else:
                 self.direction = 'left'
-            speed1 = int(str(rounded(tilt[0]+(1 * tilt[0]/abs(tilt[0])))).split('.')[0])
-        if abs(tile[1]) > 0:
-            if tit[1] > 0:
+            speed1 = int(str(round(tilt[0]+(1 * tilt[0]/abs(tilt[0])))).split('.')[0])
+        if abs(tilt[1]) > 0:
+            if tilt[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
-            speed2 = int(str(rounded(tilt[1]+(1 * tilt[1]/abs(tilt[1])))).split('.')[1])
+            speed2 = int(str(round(tilt[1]+(1 * tilt[1]/abs(tilt[1])))).split('.')[1])
         #change_x = math.sin(self.direction*2*math.pi)*self.speed
         #change_y = math.cos(self.direction*2*math.pi)*self.speed
         #self.marble.x += change_x
