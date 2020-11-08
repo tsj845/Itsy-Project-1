@@ -1,6 +1,7 @@
 # ciruit python libraries unable to be put into github directly:
 goto: https://circuitpython.org/libraries
-download the most recent file
+down load Bundle Version 6.x
+
 you will need:
 adafruit_bus_device
 adafruit_lsm6ds
