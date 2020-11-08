@@ -4,8 +4,6 @@ from displayio import *
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
 
-## we need five sprites (ball, verticle passage, horizontal passage, corner, and a solid wall)
-# we only need one corner slot in the sheet because we can flip it (might change it later if it turns out to be too difficult)
 sprites = Bitmap(32, 32, 2)
 colors = Palette(2)
 colors[0] = 0x000000
@@ -17,22 +15,20 @@ class Marble:
         self.y = y
         self.sprite = Circle(x, y, 8)
     def move(self, direction, step):
-        if direction == 'up':
+        if direction == 'up' and self.sprite.y > 5:
             self.sprite.y -= step
-        elif direction == 'down':
+        elif direction == 'down' and self.sprite.y < 120:
             self.sprite.y += step
-        elif direction == 'right':
+        elif direction == 'right' and self.sprite.x < 120:
             self.sprite.x += 1
-        else:
+        elif direction == 'left' and self.sprite.x > 5:
             self.sprite.x -= 1
 
 class Maze:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.marble = Marble(random.randint(0, 15)*8, random.randint(0, 15)*8) #placed randomly, for now
-        self.direction = None #Starts as none, will represent what angle marble will move at (0-1)
-        self.speed = 0 #Starts as none, will represent pixels per second
+        self.marble = Marble(10, 10)
     def move_marble(self, tilt):
         direc1 = 'up'
         direc2 = 'up'
@@ -40,19 +36,15 @@ class Maze:
         speed2 = 0
         if abs(tilt[0]) > 0:
             if tilt[0] > 0:
-                self.direction = 'right'
+                direc1 = 'right'
             else:
-                self.direction = 'left'
-            speed1 = int(str(rounded(tilt[0]+(1 * tilt[0]/abs(tilt[0])))).split('.')[0])
+                direc1 = 'left'
+            speed1 = round(tilt[0]+(1 * tilt[0]/abs(tilt[0])))
         if abs(tile[1]) > 0:
             if tit[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
-            speed2 = int(str(rounded(tilt[1]+(1 * tilt[1]/abs(tilt[1])))).split('.')[1])
-        #change_x = math.sin(self.direction*2*math.pi)*self.speed
-        #change_y = math.cos(self.direction*2*math.pi)*self.speed
-        #self.marble.x += change_x
-        #self.marble.y += change_y
+            speed2 = round(tilt[1]+(1 * tilt[1]/abs(tilt[1])))
         self.marble.move(direc1, speed1)
         self.marble.move(direc2, speed2)
