@@ -17,7 +17,7 @@ app = storage()
 
 app.tilt = [0, 0]
 
-maze = maze_data.maze(128, 128, g)
+maze = maze_data.Maze(128, 128, g)
 
 for i in range(60):
   app.tilt[0] += sense.gyro[0]
