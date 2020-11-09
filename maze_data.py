@@ -56,9 +56,11 @@ class Maze:
         g.append(self.marble.sprite)
         self.paths = []
         self.goal = (7, 7)
+        self.marbleX = 0
+        self.marbleY = 0
     def checkWin(self):
         win = False
-        if distance(self.marblePos[0], self.marblePos[1], self.goal[0], self.goal[1]) < 16:
+        if abs(self.goal[0]*16 - self.marble.sprite.x) < 16 and abs(self.goal[1]*16 - self.marble.sprite.y) < 16:
             win = True
         print(win)
     def generateMaze(self):
@@ -94,3 +96,4 @@ class Maze:
             speed2 = abs(round(tilt[1]))
         self.marble.move(direc1, speed1)
         self.marble.move(direc2, speed2)
+        self.checkWin()
