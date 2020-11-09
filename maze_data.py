@@ -41,8 +41,8 @@ class Maze:
             else:
                 direc1 = 'left'
             speed1 = abs(round(tilt[0]))
-        if abs(tile[1]) > 3:
-            if tit[1] > 0:
+        if abs(tilt[1]) > 3:
+            if tilt[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
