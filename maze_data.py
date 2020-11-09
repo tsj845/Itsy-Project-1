@@ -32,7 +32,7 @@ class Maze:
         self.marble = Marble(10, 10)
         g.append(self.tiles)
         g.append(self.marble.sprite)
-        self.path = []
+        self.paths = []
     def createPath(self, x, y, d, h=False):
         for i in range(d):
             if h:
