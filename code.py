@@ -17,10 +17,10 @@ app = storeageC()
 
 app.tilt = [0, 0]
 
-maze = maze_data.maze(128, 128, g)
+maze = maze_data.Maze(128, 128, g)
 
-for i in range(60):
-  app.tilt[0] -= sense.gyro[0]
-  app.tilt[1] += sense.gyro[1]
-  maze.move(app.tilt)
-  time.sleep(0.25)
+#for i in range(60):
+  #app.tilt[0] -= sense.gyro[0]
+  #app.tilt[1] += sense.gyro[1]
+  #maze.move(app.tilt)
+  #time.sleep(0.25)
