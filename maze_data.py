@@ -13,7 +13,7 @@ class Marble:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.sprite = Circle(x, y, 8, fill=0xFFFFFF)
+        self.sprite = Circle(x, y, 8, fill=0xFFFFFF, outline=0x000000)
     def move(self, direction, step):
         if direction == 'up' and self.sprite.y > 5:
             self.sprite.y -= step
@@ -28,8 +28,21 @@ class Maze:
     def __init__(self, width, height, g):
         self.width = width
         self.height = height
+        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16, tile_height=16, default_tile=1)
         self.marble = Marble(10, 10)
+        g.append(self.tiles)
         g.append(self.marble.sprite)
+        self.path = []
+    def createPath(self, x, y, d, h=False):
+        for i in range(d):
+            if h:
+                self.tiles[x+d, y] = sprites[0]
+            else:
+                self.tiles[x, y+d] = sprites[0]
+        if h:
+            self.paths.append((y, round(x*16-8), round((x+d)*16-8), True))
+        else:
+            self.paths.append((x, round(y*16-8), round((y+d)*16-8), False))
     def move(self, tilt):
         direc1 = 'up'
         direc2 = 'up'
@@ -41,8 +54,8 @@ class Maze:
             else:
                 direc1 = 'left'
             speed1 = abs(round(tilt[0]))
-        if abs(tile[1]) > 3:
-            if tit[1] > 0:
+        if abs(tilt[1]) > 3:
+            if tilt[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
