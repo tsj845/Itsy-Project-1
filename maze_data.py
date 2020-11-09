@@ -1,4 +1,4 @@
-import random
+from random import seed, randrange
 import math
 from displayio import *
 from adafruit_display_shapes.circle import Circle
@@ -12,6 +12,9 @@ colors[1] = 0xFFFFFF
 for i in range(16):
     for i2 in range(16):
         sprites[i, i2] = 1
+
+def distance(x1, y1, x2, y2):
+    return round(sqrt(pow((x2 - x1),2) + pow((y2 - y1),2)))
 
 class Marble:
     def __init__(self, x, y, parent):
@@ -52,6 +55,14 @@ class Maze:
         g.append(self.tiles)
         g.append(self.marble.sprite)
         self.paths = []
+        self.goal = (7, 7)
+    def checkWin(self):
+        win = False
+        if distance(self.marblePos[0], self.marblePos[1], self.goal[0], self.goal[1]) < 16:
+            win = True
+        print(win)
+    def generateMaze(self):
+        pass
     def clearPaths(self):
         self.paths.clear()
         for i in range(64):
