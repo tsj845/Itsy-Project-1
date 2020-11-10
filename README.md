@@ -2,7 +2,7 @@
 goto: https://circuitpython.org/libraries
 download Bundle Version 6.x
 
-you will need:
+# you will need:
 adafruit_bus_device
 adafruit_lsm6ds
 adafruit_register
