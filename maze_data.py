@@ -72,6 +72,7 @@ class Maze:
         g.append(self.marble.sprite)
         self.paths = []# this is the list of all the paths
         self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
+        self.threshHold = 3
     def reset(self):
         self.marble.goto(0, 0)# the coordinate "0, 0" is a placeholder for now
         self.marble.sprite.fill = white# reset the fill after the death animation
@@ -118,13 +119,13 @@ class Maze:
         direc2 = 'up'## there are two axes
         speed1 = 0
         speed2 = 0
-        if abs(tilt[0]) > 3:# provides a thresh hold for movement
+        if abs(tilt[0]) > self.threshHold:# provides a thresh hold for movement
             if tilt[0] > 0:# checks if the player has tilted the maze right or left
                 direc1 = 'right'# sets the direction variable accordingly
             else:
                 direc1 = 'left'
             speed1 = abs(round(tilt[0]))
-        if abs(tilt[1]) > 3:
+        if abs(tilt[1]) > self.threshHold:
             if tilt[1] > 0:
                 direc2 = 'down'
             else:
@@ -132,4 +133,4 @@ class Maze:
             speed2 = abs(round(tilt[1]))
         self.marble.move(direc1, speed1)# moves the marble
         self.marble.move(direc2, speed2)
-        self.checkWin()# checks if the player has won
+        #self.checkWin()# checks if the player has won
