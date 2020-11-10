@@ -54,6 +54,10 @@ class Marble:
         for i in range(16):
             self.sprite.fill -= 0x111111
             sleep(0.5)
+        self.parent.reset()
+    def goto(self, x, y):
+        self.sprite.x = x*16
+        self.sprite.y = y*16
 
 class Maze:
     def __init__(self, width, height, g):
@@ -68,6 +72,12 @@ class Maze:
         g.append(self.marble.sprite)
         self.paths = []# this is the list of all the paths
         self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
+    def reset(self):
+        self.marble.goto(0, 0)# the coordinate "0, 0" is a placeholder for now
+        self.marble.sprite.fill = white# reset the fill after the death animation
+        self.deathAnimation = False# causes the maze not to ignore inputs once the reset is complete
+        #self.clearPaths()# note: for now don't uncomment
+        #self.generateMaze()# note: for now don't uncomment
     def setMode(self, mode):
         self.marble.behavior = mode
     def checkWin(self):# currently doesn't trigger anything
