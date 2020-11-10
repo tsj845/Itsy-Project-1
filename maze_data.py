@@ -35,9 +35,9 @@ class Marble:
         y = self.sprite.y
         if direction == 'up' and self.sprite.y > 8:# these if statements ensure that the marble isn't going to go off the screen
             y -= step# the x and y coordinates of the sprite are not changed until later so that they can be checked
-        elif direction == 'down' and self.sprite.y < 120:
+        elif direction == 'down' and self.sprite.y < 112:
             y += step
-        elif direction == 'right' and self.sprite.x < 120:
+        elif direction == 'right' and self.sprite.x < 112:
             x += step
         elif direction == 'left' and self.sprite.x > 8:
             x -= step
@@ -46,9 +46,11 @@ class Marble:
             self.sprite.y = y
             if not self.oOB(x, y):
                 self.doFall()
-        elif self.oOB(x, y):# ensures that the x and y coordinates are valid before applying them to the marble
-            self.sprite.x = x
-            self.sprite.y = y
+        else:
+            if self.oOB(x, self.sprite.y):# ensures that the x and y coordinates are valid before applying them to the marble
+                self.sprite.x = x
+            if self.oOB(self.sprite.x, y):
+                self.sprite.y = y
     def doFall(self):
         self.parent.deathAnimation = True
         for i in range(16):
@@ -124,13 +126,17 @@ class Maze:
                 direc1 = 'right'# sets the direction variable accordingly
             else:
                 direc1 = 'left'
-            speed1 = abs(round(tilt[0]))
+            speed1 = abs(tilt[0])
         if abs(tilt[1]) > self.threshold:
             if tilt[1] > 0:
                 direc2 = 'down'
             else:
                 direc2 = 'up'
-            speed2 = abs(round(tilt[1]))
+            speed2 = abs(tilt[1])
+        if speed1 % 2 != 0:
+            speed1 += 1
+        if speed2 % 2 != 0:
+            speed2 += 1
         self.marble.move(direc1, speed1)# moves the marble
         self.marble.move(direc2, speed2)
         #self.checkWin()# checks if the player has won
