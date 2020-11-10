@@ -85,8 +85,8 @@ class Maze:
                 direc1 = 'right'# sets the direction variable accordingly
             else:
                 direc1 = 'left'
-            speed1 = abs(round(tilt[0]))# sets the speed variable
-        if abs(tilt[1]) > 3:# does the same for the y axis
+            speed1 = abs(round(tilt[0]))
+        if abs(tilt[1]) > 3:
             if tilt[1] > 0:
                 direc2 = 'down'
             else:
