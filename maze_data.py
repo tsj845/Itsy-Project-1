@@ -87,7 +87,7 @@ class Maze:
             win = True
         print(win)
     def generateMaze(self, nPaths=0):# this is a placeholder, nPaths won't be used but may be passed by a caller
-        paths = ['c00-8', 'r40-5', 'c50-8', 'r80-8']# placeholder maze
+        paths = ['c00-8', 'r40-5', 'c50-8', 'r80-7']# placeholder maze
         for item in paths:
             self.createPath(item)
     def generateMaze2(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
