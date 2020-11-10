@@ -1,3 +1,4 @@
+from time import sleep
 from random import seed, randrange
 #import math
 from displayio import Bitmap, Palette, TileGrid, Group
@@ -15,6 +16,7 @@ for i in range(16):# this generates the path tiles
 
 class Marble:
     def __init__(self, x, y, parent):
+        self.behavior = 0
         self.parent = parent
         self.sprite = Circle(x, y, 8, fill=0xFFFFFF, outline=0x000000)# creates the marble drawn onscreen
     def oOB(self, x, y):
@@ -39,12 +41,23 @@ class Marble:
             x += step
         elif direction == 'left' and self.sprite.x > 8:
             x -= step
-        if self.oOB(x, y):# ensures that the x and y coordinates are valid before applying them to the marble
+        if self.behavior == 1:
             self.sprite.x = x
             self.sprite.y = y
+            if not elf.oOB(x, y):
+                self.doFall()
+        elif self.oOB(x, y):# ensures that the x and y coordinates are valid before applying them to the marble
+            self.sprite.x = x
+            self.sprite.y = y
+    def doFall(self):
+        self.parent.deathAnimation = True
+        for i in range(16):
+            self.sprite.fill -= 0x111111
+            sleep(0.5)
 
 class Maze:
     def __init__(self, width, height, g):
+        self.deathAnimation = False
         self.width = width
         self.height = height
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
@@ -55,6 +68,8 @@ class Maze:
         g.append(self.marble.sprite)
         self.paths = []# this is the list of all the paths
         self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
+    def setMode(self, mode):
+        self.marble.behavior = mode
     def checkWin(self):# currently doesn't trigger anything
         ## checks to see if the sprite is within twelve (12) pixels of the center coordinates of the tile marked as the goal
         win = False
@@ -83,6 +98,8 @@ class Maze:
             for i in range(int(string[2]), int(string[4])):
                 self.tiles[i*8+int(string[1])] = 0
     def move(self, tilt):# allows the marble to move through the maze
+        if self.deathAnimation:
+            return None
         direc1 = 'up'# "up" is a placeholder, there are two direction and speed variables because-
         direc2 = 'up'## there are two axes
         speed1 = 0
