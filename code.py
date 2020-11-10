@@ -20,8 +20,8 @@ app.tilt = [0, 0]# stores the tilt on the x and y axes
 maze = maze_data.Maze(128, 128, g)# creates the maze
 
 def logic():# does the work
-  app.tilt[0] -= sense.gyro[0]
-  app.tilt[1] += sense.gyro[1]
+  app.tilt[0] -= round(sense.gyro[0]/2)
+  app.tilt[1] += round(sense.gyro[1]/2)
   maze.move(app.tilt)
   sleep(0.25)
 
