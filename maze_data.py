@@ -64,7 +64,12 @@ class Maze:
     def generateMaze(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
         pathMap = [[0 for i in range(8)] for i in range(8)]# will store the states of the maze, will be converted to instructions later
         for i in range(nPaths):
-            pass
+            pass# it will be important to have some rules for generating the paths
+        # paths do not generate on top of each other ex: program can't do 'c00-2' then 'c00-8'
+        #  this will prevent wasting paths and will also save on processing time when doing collision checks
+        # all paths are connected to all other paths (no path is unreachable)
+        # paths do not wrap around to the next row/column ex: 'c07-9' would wrap around to the next row
+        #  that is unwanted behaivior
     def clearPaths(self):# this is a debugging tool, may be usefull for generating new mazes after-
         self.paths.clear()## old ones are beaten by the player
         for i in range(64):# sets all the tiles to walls and clears the list of paths
