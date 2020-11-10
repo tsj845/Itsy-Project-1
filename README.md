@@ -2,10 +2,10 @@
 goto: https://circuitpython.org/libraries
 download Bundle Version 6.x
 
-you will need:
-adafruit_bus_device
-adafruit_lsm6ds
-adafruit_register
+# you will need:
+1. adafruit_bus_device
+2. adafruit_lsm6ds
+3. adafruit_register
 
 # Instructions:
 drag these files into the "lib" folder on the Isty
