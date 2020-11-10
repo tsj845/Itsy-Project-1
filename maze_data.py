@@ -44,7 +44,7 @@ class Marble:
         if self.behavior == 1:
             self.sprite.x = x
             self.sprite.y = y
-            if not elf.oOB(x, y):
+            if not self.oOB(x, y):
                 self.doFall()
         elif self.oOB(x, y):# ensures that the x and y coordinates are valid before applying them to the marble
             self.sprite.x = x
