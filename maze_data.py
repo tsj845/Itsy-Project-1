@@ -86,7 +86,11 @@ class Maze:
         if abs(self.goal[0]*16 - self.marble.sprite.x) < 16 and abs(self.goal[1]*16 - self.marble.sprite.y) < 16:
             win = True
         print(win)
-    def generateMaze(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
+    def generateMaze(self, nPaths=0):# this is a placeholder, nPaths won't be used but may be passed by a caller
+        paths = ['c00-8', 'r40-5', 'c50-8', 'r80-8']# placeholder maze
+        for item in paths:
+            self.createPath(item)
+    def generateMaze2(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
         pathMap = [[0 for i in range(8)] for i in range(8)]# will store the states of the maze, will be converted to instructions later
         for i in range(nPaths):
             pass# it will be important to have some rules for generating the paths
