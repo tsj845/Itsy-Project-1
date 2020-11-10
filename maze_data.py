@@ -1,6 +1,6 @@
 from random import seed, randrange
-import math
-from displayio import *
+#import math
+from displayio import Bitmap, Palette, TileGrid, Group
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
 
@@ -61,8 +61,10 @@ class Maze:
         if abs(self.goal[0]*16 - self.marble.sprite.x) < 16 and abs(self.goal[1]*16 - self.marble.sprite.y) < 16:
             win = True
         print(win)
-    def generateMaze(self):
-        pass
+    def generateMaze(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
+        pathMap = [[0 for i in range(8)] for i in range(8)]# will store the states of the maze, will be converted to instructions later
+        for i in range(nPaths):
+            pass
     def clearPaths(self):# this is a debugging tool, may be usefull for generating new mazes after-
         self.paths.clear()## old ones are beaten by the player
         for i in range(64):# sets all the tiles to walls and clears the list of paths
