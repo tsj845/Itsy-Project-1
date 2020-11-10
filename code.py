@@ -2,7 +2,7 @@ import board
 from displayio import Group
 import adafruit_ssd1327
 import busio
-import time
+from time import sleep
 import pers
 import maze_data
 
@@ -18,6 +18,20 @@ app = storeageC()# creating an instance of the storage class
 app.tilt = [0, 0]# stores the tilt on the x and y axes
 
 maze = maze_data.Maze(128, 128, g)# creates the maze
+
+def logic():# does the work
+  app.tilt[0] -= sense.gyro[0]
+  app.tilt[1] += sense.gyro[1]
+  maze.move(app.tilt)
+  sleep(0.25)
+
+def run(time=0):# this ensures that if you want unlimited testing time you must be connected via serial port
+  if time == 0:#    this ensures that the tester can do a keyboard interrupt at any time
+    while True:
+      logic()
+  else:
+    for i in range(time*4):
+      logic()
 
 #for i in range(60):
   #app.tilt[0] -= sense.gyro[0]
