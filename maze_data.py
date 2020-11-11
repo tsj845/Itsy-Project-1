@@ -77,7 +77,7 @@ class Maze:
         self.threshold = 3
     def reset(self, v=False):
         self.marble.goto(0, 0)# the coordinate "0, 0" is a placeholder for now
-        self.marble.sprite.fill = white# reset the fill after the death animation
+        self.marble.sprite.fill = 0xFFFFFF# reset the fill after the death animation
         self.deathAnimation = False# causes the maze not to ignore inputs once the reset is complete
         if v:
             self.clearPaths()
