@@ -102,6 +102,7 @@ class Maze:
         # all paths are connected to all other paths (no path is unreachable)
         # paths do not wrap around to the next row/column ex: 'c07-9' would wrap around to the next row
         #  that is unwanted behaivior
+        # paths can't generate side by side ex: 'c00-8' and 'c10-8' this will cause movement issues
     def clearPaths(self):# this is a debugging tool, may be usefull for generating new mazes after-
         self.paths.clear()## old ones are beaten by the player
         for i in range(64):# sets all the tiles to walls and clears the list of paths
