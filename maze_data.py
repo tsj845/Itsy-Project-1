@@ -75,12 +75,13 @@ class Maze:
         self.paths = []# this is the list of all the paths
         self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
         self.threshold = 3
-    def reset(self):
+    def reset(self, v=False):
         self.marble.goto(0, 0)# the coordinate "0, 0" is a placeholder for now
         self.marble.sprite.fill = white# reset the fill after the death animation
         self.deathAnimation = False# causes the maze not to ignore inputs once the reset is complete
-        #self.clearPaths()# note: for now don't uncomment
-        #self.generateMaze()# note: for now don't uncomment
+        if v:
+            self.clearPaths()
+            self.generateMaze()
     def setMode(self, mode):
         self.marble.behavior = mode
     def checkWin(self):# currently doesn't trigger anything
@@ -88,7 +89,8 @@ class Maze:
         win = False
         if abs(self.goal[0]*16 - self.marble.sprite.x) < 16 and abs(self.goal[1]*16 - self.marble.sprite.y) < 16:
             win = True
-        print(win)
+        if win:
+            self.reset(True)
     def generateMaze(self, nPaths=0):# this is a placeholder, nPaths won't be used but may be passed by a caller
         paths = ['c00-8', 'r40-5', 'c50-8', 'r70-8']# placeholder maze
         for item in paths:
@@ -140,4 +142,4 @@ class Maze:
             speed2 += 1
         self.marble.move(direc1, speed1)# moves the marble
         self.marble.move(direc2, speed2)
-        #self.checkWin()# checks if the player has won
+        self.checkWin()# checks if the player has won
