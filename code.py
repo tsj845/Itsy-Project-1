@@ -1,25 +1,29 @@
 import board
-import displayio
+from displayio import Group
 import adafruit_ssd1327
 import busio
 import time
 import pers
 import maze_data
 
-display = pers.display
 sense = pers.sensor
+g = Group()
+pers.display.show(g)
 
-class storage():
+class storeageC():
   pass
 
-app = storage()
+app = storeageC()
 
 app.tilt = [0, 0]
 
-maze = maze_data.maze()
+maze = maze_data.Maze(128, 128, g)
+maze.direction = 0
 
-for i in range(60):
-  app.tilt[0] += sense.rotation[0]
-  app.tilt[1] += sense.rotation[1]
-  maze.move(app.tilt)
+for i in range(10000):
+  if sense.gyro[0]>0.5 or sense.gyro[0]<-0.5:
+    app.tilt[0] -= sense.gyro[0]
+  if sense.gyro[1]>0.5 or sense.gyro[1]<-0.5:
+    app.tilt[1] += sense.gyro[1]
+  maze.move_marble(app.tilt)
   time.sleep(0.25)
