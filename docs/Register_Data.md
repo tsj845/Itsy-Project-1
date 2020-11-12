@@ -6,7 +6,7 @@
 3. Note (cont.): "Page No." is the page that has the details of the register in the datasheet, "Default Value" is what the default value of the register is
 4. Note (cont.): "Relevant Bits" are all of bits that are relevant to tap detection
 5. Note (cont.): "WARNING" signifies a warning that must be adheared to
-6. Note (cont.): It will also be helpful to remember that the bit numbers are indexes and thus begin from 0, when I refer to "bit 6" I am referring to the seventh bit in the register
+6. Note (cont.): It will also be helpful to remember that the bit numbers are indexes and thus begin from 0, when I refer to "bit 6" I am referring to the seventh bit in the register. Another important thing to remember is that the Least Signifigant Bit (LSB) is on the right, this is important to remember because if you don't then you will get many errors/unintended behaviors.
 
 # WAKE_UP_THS:
 1. Hexadecimal Address: 5B
