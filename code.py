@@ -18,7 +18,6 @@ app = storeageC()
 app.tilt = [0, 0]
 
 maze = maze_data.Maze(128, 128, g)
-maze.direction = 0
 
 for i in range(10000):
   if sense.gyro[0]>0.5 or sense.gyro[0]<-0.5:
@@ -26,4 +25,4 @@ for i in range(10000):
   if sense.gyro[1]>0.5 or sense.gyro[1]<-0.5:
     app.tilt[1] += sense.gyro[1]
   maze.move_marble(app.tilt)
-  time.sleep(0.25)
+  time.sleep(0.01)
