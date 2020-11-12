@@ -33,8 +33,10 @@ class Maze:
             self.marble.y += change_y
             if self.marble.x > 110:
                 self.marble.x = 110
+                 self.speed_x = 0
             if self.marble.x < 0:
                 self.marble.x = 0
+                 self.speed_x = 0
             if self.marble.y > 110:
                 self.marble.y = 110
                 self.speed_y = 0
