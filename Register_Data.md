@@ -5,6 +5,8 @@
 2. Note: "Info" is what the values represent, "Details" is what the register controls, "Hexadeciaml Address" is the address of the register
 3. Note (cont.): "Page No." is the page that has the details of the register in the datasheet, "Default Value" is what the default value of the register is
 4. Note (cont.): "Relevant Bits" are all of bits that are relevant to tap detection
+5. Note (cont.): "WARNING" signifies a warning that must be adheared to
+6. Note (cont.): It will also be helpful to remember that the bit numbers are indexes and thus begin from 0, when I refer to "bit 6" I am referring to the seventh bit in the register
 
 # WAKE_UP_THS:
 1. Hexadecimal Address: 5B
@@ -47,6 +49,7 @@
 5. Defalut Value: 0000000
 6. Info: bit 4 - when value is 0 the sign of the acceleration is positive, when value is 1 the sign of the acceleration is negative
 7. Info (cont.): for all bits other than bit 4 - when value is 0 tap event is not detected, when value is 1 tap event is detected
+8. WARNING: bit 0 must always be set to 0 according to the datasheet
 
 # Register Bit Bindings:
 contains what each bit in the relevant registers controls / represents
