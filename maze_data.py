@@ -24,8 +24,8 @@ class Maze:
         g.append(self.tiles)
         g.append(self.marble)
     def move_marble(self, tilt):
-        self.speed_x += 20*math.sin(tilt[0]*math.pi/180)
-        self.speed_y += 20*math.sin(tilt[1]*math.pi/180)
+        self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
+        self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
         if self.direction != None:
             change_x = round(math.cos(self.direction*2*math.pi)*self.speed_x)
             change_y = round(math.cos(self.direction*2*math.pi)*self.speed_y)
