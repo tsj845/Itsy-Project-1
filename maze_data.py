@@ -29,18 +29,20 @@ class Maze:
         if self.direction != None:
             change_x = round(math.cos(self.direction*2*math.pi)*self.speed_x)
             change_y = round(math.cos(self.direction*2*math.pi)*self.speed_y)
-            self.marble.x += change_x
-            self.marble.y += change_y
-            if self.marble.x > 110:
+            #check if it is at wall
+            if self.marble.x + change_x > 110:
                 self.marble.x = 110
-                 self.speed_x = 0
-            if self.marble.x < 0:
+                self.speed_x = 0
+            elif self.marble.x + change_x < 0:
                 self.marble.x = 0
-                 self.speed_x = 0
-            if self.marble.y > 110:
+                self.speed_x = 0
+            else:
+                self.marble.x += change_x
+            if self.marble.y + change_y> 110:
                 self.marble.y = 110
                 self.speed_y = 0
-            if self.marble.y < 0:
+            elif self.marble.y + change_y< 0:
                 self.marble.y = 0
                 self.speed_y = 0
-            print(tilt[1])
+            else:
+                 self.marble.y += change_y
