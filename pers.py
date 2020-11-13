@@ -3,7 +3,7 @@ import busio
 import time
 from displayio import release_displays
 
-displayio.release_displays()# allows the i2c bus to be used
+release_displays()# allows the i2c bus to be used
 
 i2c = busio.I2C(board.SCL, board.SDA)# initializes the i2c bus
 
