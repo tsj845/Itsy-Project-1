@@ -2,7 +2,7 @@ import random
 from math import sin, cos, pi
 from displayio import *
 from adafruit_display_shapes.circle import Circle
-from adafruit_display_shapes.rect import Rect
+#from adafruit_display_shapes.rect import Rect## we aren't using it right now so no need to import it
 
 sprites = Bitmap(32, 32, 2)
 colors = Palette(2)
