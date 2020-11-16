@@ -45,6 +45,8 @@ class Maze:
         4. once all overlaps are checked, none of the overlapping tiles are black then return True
         """
         return True# placeholder
+        for index in range(getRange()):
+            pass
     def move_marble(self, tilt):
         """
         direction value mapping:
