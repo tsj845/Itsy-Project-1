@@ -12,7 +12,12 @@ colors[1] = 0xFFFFFF
 for i in range(16):# this generates the path tiles
     for i2 in range(16):
         sprites[i, i2] = 1
-    
+
+def collision(x1, y1, r1, x2, y2, r2):
+    r = r1 + r2
+    r *= r
+    return r > pow((x1 + x2), 2) + pow((y1 + y2), 2)
+
 class Maze:
     def __init__(self, width, height, g):
         self.width = width
@@ -23,6 +28,8 @@ class Maze:
         #self.speed_y = 1
         g.append(self.tiles)
         g.append(self.marble)
+    def getRange(self):
+        return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
     def checkBounds(self, x, y):# will check if the marble collides with a wall
         """
         PLAN FOR HOW THE FUNCTION WILL FUNCTION:
@@ -43,10 +50,22 @@ class Maze:
         2. then if an overlap is found check the fill of the overlapping tile
         3. if the fill is black then return False
         4. once all overlaps are checked, none of the overlapping tiles are black then return True
+        
+        checks for overlaps by checking if the marble is within the maximum distance for a collision
+        if it is then it is treated as a collision
         """
         return True# placeholder
-        for index in range(getRange()):
-            pass
+        for i in range(self.getRange()):
+            i2 = i
+            y = 8
+            while i2 > 7:
+                y += 16
+                i2 -= 1
+            x = i2 *= 16 + 8
+            if distance(self.marble.x, self.marble.y, x, y) < 18:#16 for smaller marble
+                if self.tiles[i] == 1:
+                    return False
+        return True
     def move_marble(self, tilt):
         """
         direction value mapping:
