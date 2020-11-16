@@ -33,13 +33,13 @@ class Marble:
     def move(self, direction, step):
         x = self.sprite.x# this provides a value that won't affect the sprite if changed
         y = self.sprite.y
-        if direction == 'up' and self.sprite.y > 8:# these if statements ensure that the marble isn't going to go off the screen
+        if direction == 'up' and self.sprite.y > 0:# these if statements ensure that the marble isn't going to go off the screen
             y -= step# the x and y coordinates of the sprite are not changed until later so that they can be checked
         elif direction == 'down' and self.sprite.y < 112:
             y += step
         elif direction == 'right' and self.sprite.x < 112:
             x += step
-        elif direction == 'left' and self.sprite.x > 8:
+        elif direction == 'left' and self.sprite.x > 0:
             x -= step
         if self.behavior == 1:
             self.sprite.x = x
@@ -120,26 +120,20 @@ class Maze:
     def move(self, tilt):# allows the marble to move through the maze
         if self.deathAnimation:
             return None
-        direc1 = 'up'# "up" is a placeholder, there are two direction and speed variables because-
-        direc2 = 'up'## there are two axes
-        speed1 = 0
-        speed2 = 0
         if abs(tilt[0]) > self.threshold:# provides a threshold for movement
-            if tilt[0] > 0:# checks if the player has tilted the maze right or left
-                direc1 = 'right'# sets the direction variable accordingly
-            else:
-                direc1 = 'left'
-            speed1 = abs(tilt[0])
+            s1 = tilt[0]
         if abs(tilt[1]) > self.threshold:
-            if tilt[1] > 0:
-                direc2 = 'down'
-            else:
-                direc2 = 'up'
-            speed2 = abs(tilt[1])
+            s2 = tilt[1]
         if speed1 % 2 != 0:
-            speed1 += 1
-        if speed2 % 2 != 0:
-            speed2 += 1
+            if speed1 > 0:
+                speed1 += 1
+            else:
+                speed1 -= 1
+        if speed2 % 2 != :
+            if speed2 > 0:
+                speed2 += 1
+            else:
+                speed2 -= 1
         self.marble.move(direc1, speed1)# moves the marble
         self.marble.move(direc2, speed2)
         self.checkWin()# checks if the player has won
