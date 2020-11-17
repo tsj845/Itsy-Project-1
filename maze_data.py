@@ -30,6 +30,7 @@ class Maze:
         self.dA = False
         self.mode = 0
         self.goal = (7, 7)
+        self.threshold = 2
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
@@ -114,11 +115,13 @@ class Maze:
         nx = self.marble.x + round(sin(direction*2*pi)*(tilt[0]/4))
         ny = self.marble.y + round(cos(direction*2*pi)*(tilt[1]/4))
         if ny > -1 and ny < 113:
-            if checkBounds(self.marble.x, y):
-                self.marble.y = ny
+            if ny - self.marble.y > self.threshold:
+                if checkBounds(self.marble.x, y):
+                    self.marble.y = ny
         if nx > -1 and nx < 113:
-            if checkBouds(x, self.marble.y):
-                self.marble.x = nx
+            if nx - self.marble.x > self.threshold:
+                if checkBouds(x, self.marble.y):
+                    self.marble.x = nx
         self.checkWin()
         #self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         #self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
