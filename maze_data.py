@@ -26,15 +26,22 @@ class Maze:
         g.append(self.tiles)
         g.append(self.marble)
         self.paths = []
-    def reset(self, h=False):
         self.dA = False
+    def reset(self, v=False):
+        self.marble.x = 0
+        self.marble.y = 0
+        self.marble.sprite.fill = 0xFFFFFF
+        self.dA = False
+        if v:
+            self.clearPaths()
+            self.generateMaze()
+    def setMode(self, mode):
+        self.marble.behavior = mode
     def checkWin(self):
-        win = False
         xv = abs(self.goal[0]*16 - self.marble.sprite.x)
         yv = abs(self.goal[1]*16 - self.marble.sprite.y)
-        if xv < 16 and yv < 16:
-            win = True
-        self.reset(True)
+        if xv < 16 and yv < 16 and:
+            self.reset(True)
     def generateMaze(self, nPaths=5):
         pass
     def clearPaths(self):
@@ -83,6 +90,10 @@ class Maze:
         
         i think this could be the way to go if you have any disagreements let me know
         """
+        if self.dA:
+            for i in range(15):
+                pass
+            return None
         direction = 0.675# interesting thing is that if this changed the controls change
         nx = self.marble.x + round(sin(direction*2*pi)*(tilt[0]/4))
         ny = self.marble.y + round(cos(direction*2*pi)*(tilt[1]/4))
@@ -92,6 +103,7 @@ class Maze:
         if nx > -1 and nx < 113:
             if checkBouds(x, self.marble.y):
                 self.marble.x = nx
+        self.checkWin()
         #self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         #self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
         #if self.direction != None:
