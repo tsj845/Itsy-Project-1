@@ -28,6 +28,26 @@ app.tilt = [0, 0]
 
 maze = maze_data.Maze(128, 128, g)
 
+def logic():# does the work
+  app.tilt[0] -= round(sense.gyro[0]*2)
+  app.tilt[1] += round(sense.gyro[1]*2)
+  maze.move(app.tilt)
+  if not switch.value:
+    led.value = True
+    app.tilt = [0, 0]
+    sleep(0.25)
+    led.value = False
+  else:
+    sleep(0.25)
+
+def run(time=0):
+  if time == 0:
+    while True:
+      logic()
+  else:
+    for i in range(time*4):
+      logic()
+
 for i in range(10000):
   if sense.gyro[0]*5>0.5 or sense.gyro[0]*5<-0.5:
     app.tilt[0] -= 5*sense.gyro[0]
