@@ -31,7 +31,7 @@ maze = maze_data.Maze(128, 128, g)
 def logic():# does the work
   app.tilt[0] -= round(sense.gyro[0]*2)
   app.tilt[1] += round(sense.gyro[1]*2)
-  maze.move(app.tilt)
+  maze.move_marble(app.tilt)
   if not switch.value:
     led.value = True
     app.tilt = [0, 0]
