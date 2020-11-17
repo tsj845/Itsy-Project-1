@@ -1,5 +1,6 @@
 import random
 from math import sin, cos, pi
+from time import sleep
 from displayio import *
 from adafruit_display_shapes.circle import Circle
 #from adafruit_display_shapes.rect import Rect## we aren't using it right now so no need to import it
@@ -27,6 +28,13 @@ class Maze:
         g.append(self.marble)
         self.paths = []
         self.dA = False
+        self.mode = 0
+    def dAn(self):
+        if self.mode == 1:
+            for i in range(15):
+                self.marble.fill -= 0x111111
+                sleep(0.5)
+            self.reset()
     def reset(self, v=False):
         self.marble.x = 0
         self.marble.y = 0
@@ -36,7 +44,7 @@ class Maze:
             self.clearPaths()
             self.generateMaze()
     def setMode(self, mode):
-        self.marble.behavior = mode
+        self.mode = mode
     def checkWin(self):
         xv = abs(self.goal[0]*16 - self.marble.sprite.x)
         yv = abs(self.goal[1]*16 - self.marble.sprite.y)
@@ -65,16 +73,24 @@ class Maze:
             for i in range(int(string[2]), int(string[4])):
                 self.tiles[i*8+int(string[1])] = 0
     def checkBounds(self, x, y):
-        for path in self.paths:
-            if path[0] == 'c':
-                if y == int(path[1])*16:
-                    if x >= int(path[2])*16 and x < int(path[4])*16:
-                        return True
-            else:
-                if x == int(path[1])*16:
-                    if y >= int(path[2])*16 and y < int(path[4])*16:
-                        return True
-        return False
+        good = False
+        if self.mode != 1:
+            for path in self.paths:
+                if path[0] == 'c':
+                    if y == int(path[1])*16:
+                        if x >= int(path[2])*16 and x < int(path[4])*16:
+                            good = True
+                            break
+                else:
+                    if x == int(path[1])*16:
+                        if y >= int(path[2])*16 and y < int(path[4])*16:
+                            good = True
+                            break
+        if not good:
+            if self.mode == 1:
+                self.dA = True
+                good = True
+        return good
     def move_marble(self, tilt):
         """
         direction value mapping:
@@ -91,8 +107,7 @@ class Maze:
         i think this could be the way to go if you have any disagreements let me know
         """
         if self.dA:
-            for i in range(15):
-                pass
+            self.dAn
             return None
         direction = 0.675# interesting thing is that if this changed the controls change
         nx = self.marble.x + round(sin(direction*2*pi)*(tilt[0]/4))
