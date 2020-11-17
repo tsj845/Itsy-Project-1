@@ -29,6 +29,7 @@ class Maze:
         self.paths = []
         self.dA = False
         self.mode = 0
+        self.goal = (7, 7)
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
@@ -48,7 +49,7 @@ class Maze:
     def checkWin(self):
         xv = abs(self.goal[0]*16 - self.marble.sprite.x)
         yv = abs(self.goal[1]*16 - self.marble.sprite.y)
-        if xv < 16 and yv < 16 and:
+        if xv < 16 and yv < 16:
             self.reset(True)
     def generateMaze(self, nPaths=5):
         pass
