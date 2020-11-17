@@ -28,8 +28,26 @@ class Maze:
         self.paths = []
     def generateMaze(self, nPaths=5):
         pass
+    def clearPaths(self):
+        self.paths.clear()
+        for i in range(64):
+            self.tiles[i] = 1
     def createPath(self, string):
-        pass
+        """
+        syntax:
+        'txy-z'
+        t = type -> 'r' or 'c'
+        x = pos1 -> if 'r' then x coord, if 'c' then y coord
+        y = pos2 -> if 'r' then starting row, if 'c' then starting col
+        z = dist -> how many tiles in the path
+        """
+        self.paths.append(string)
+        if string[0] == 'c':
+            for i in range(int(string[2]), int(string[4])):
+                self.tiles[i+int(string[1])*8] = 0
+        else:
+            for i in range(int(string[2]), int(string[4])):
+                self.tiles[i*8+int(string[1])] = 0
     def checkBounds(self, x, y):
         for path in self.paths:
             if path[0] == 'c':
