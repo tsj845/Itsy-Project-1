@@ -129,7 +129,7 @@ class Maze:
                     self.marble.y = ny
         if nx > -1 and nx < 113:
             if nx - self.marble.x > self.threshold:
-                if checkBouds(x, self.marble.y):
+                if checkBounds(x, self.marble.y):
                     self.marble.x = nx
         self.checkWin()
         #self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
