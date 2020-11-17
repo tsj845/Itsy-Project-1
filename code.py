@@ -5,6 +5,15 @@ import busio
 import time
 import pers
 import maze_data
+from digitalio import DigitalInOut, Direction, Pull
+
+led = DigitalInOut(board.BLUE_LED)
+led.direction = Direction.OUTPUT
+
+switch = DigitalInOut(board.SWITCH)
+
+switch.direction = Direction.INPUT
+switch.pull = Pull.UP
 
 sense = pers.sensor
 g = Group()
