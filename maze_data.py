@@ -121,8 +121,8 @@ class Maze:
             self.dAn
             return None
         direction = 0.675# interesting thing is that if this changed the controls change
-        nx = self.marble.x + round(sin(direction*2*pi)*(tilt[0]/4))
-        ny = self.marble.y + round(cos(direction*2*pi)*(tilt[1]/4))
+        nx = self.marble.x + round(sin(direction*2*pi)*tilt[0])
+        ny = self.marble.y + round(cos(direction*2*pi)*tilt[1])
         if ny > -1 and ny < 113:
             if ny - self.marble.y > self.threshold:
                 if self.checkBounds(self.marble.x, y):
