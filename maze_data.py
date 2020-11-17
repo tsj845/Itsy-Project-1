@@ -124,11 +124,11 @@ class Maze:
         nx = self.marble.x + round(sin(direction*2*pi)*tilt[0])
         ny = self.marble.y + round(cos(direction*2*pi)*tilt[1])
         if ny > -1 and ny < 113:
-            if abs(abs(ny) - abs(self.marble.y)) > self.threshold:
+            if abs(ny - self.marble.y) > self.threshold:
                 if self.checkBounds(self.marble.x, y):
                     self.marble.y = ny
         if nx > -1 and nx < 113:
-            if abs(abs(nx) - abs(self.marble.x)) > self.threshold:
+            if abs(nx - self.marble.x) > self.threshold:
                 if self.checkBounds(x, self.marble.y):
                     self.marble.x = nx
         self.checkWin()
