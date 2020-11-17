@@ -31,6 +31,7 @@ class Maze:
         self.mode = 0
         self.goal = (7, 7)
         self.threshold = 2
+        self.hole = Circle(self.goal[0]*16+8, self.goal[1]*16+8, 8, fill=0x777777, outline=0xDDDDDD)
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
@@ -53,6 +54,14 @@ class Maze:
         if xv < 16 and yv < 16:
             self.reset(True)
     def generateMaze(self, nPaths=5):
+        """
+        should generate the maze
+        should set the exit position by changing the goal variable
+        once the exit is set run this code:
+            self.hole.x = self.goal[0]*16
+            self.hole.y = self.goal[1]*16
+        end of code
+        """
         pass
     def clearPaths(self):
         self.paths.clear()
