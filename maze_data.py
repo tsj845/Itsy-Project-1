@@ -25,8 +25,11 @@ class Maze:
         #self.speed_y = 1
         g.append(self.tiles)
         g.append(self.marble)
-    def getRange(self):
-        return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
+        self.paths = []
+    def generateMaze(self, nPaths=5):
+        pass
+    def createPath(self, string):
+        pass
     def checkBounds(self, x, y):
         for path in self.paths:
             if path[0] == 'c':
