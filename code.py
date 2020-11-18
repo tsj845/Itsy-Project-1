@@ -38,8 +38,8 @@ def logic():# does the work
     led.value = True
     app.tilt = [0, 0]
     time.sleep(0.25)
-    led.value = False
   else:
+    led.value = False
     time.sleep(0.25)
 
 def run(time=0):
