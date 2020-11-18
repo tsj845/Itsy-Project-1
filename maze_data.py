@@ -161,6 +161,12 @@ class Maze:
             if abs(nx - self.marble.x) > self.threshold:
                 if self.checkBounds(nx, self.marble.y):
                     self.marble.x = nx
+                else:
+                    print('x bound')
+            else:
+                print('x threshold')
+        else:
+            print('x screen')
         self.checkWin()
         #self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         #self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
