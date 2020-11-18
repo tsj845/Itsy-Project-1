@@ -35,10 +35,10 @@ def logic():# does the work
   if not switch.value:
     led.value = True
     app.tilt = [0, 0]
-    sleep(0.25)
+    time.sleep(0.25)
     led.value = False
   else:
-    sleep(0.25)
+    time.sleep(0.25)
 
 def run(time=0):
   if time == 0:
