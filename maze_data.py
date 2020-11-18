@@ -14,53 +14,6 @@ for i in range(16):# this generates the path tiles
     for i2 in range(16):
         sprites[i, i2] = 1
 
-class Marble:
-    def __init__(self, x, y, parent):
-        self.behavior = 0
-        self.parent = parent
-        self.sprite = Circle(x, y, 8, fill=0xFFFFFF, outline=0x000000)# creates the marble drawn onscreen
-    def oOB(self, x, y):
-        for path in self.parent.paths:# checks all of the paths
-            if path[0] == 'c':# this checks the orientation of the path
-                if y == int(path[1])*16:# this makes sure that the y coordinate is in the path at all
-                    if x >= int(path[2])*16 and x < int(path[4])*16:# checks to make sure that the x coordinate is valid
-                        return True
-            else:
-                if x == int(path[1])*16:# these do the same tasks as the lines above except that the x and y checking is swapped
-                    if y >= int(path[2])*16 and y < int(path[4])*16:
-                        return True
-        return False
-    def move(self, direction, step):
-        x = self.sprite.x# this provides a value that won't affect the sprite if changed
-        y = self.sprite.y
-        if direction == 'up' and self.sprite.y > 0:# these if statements ensure that the marble isn't going to go off the screen
-            y -= step# the x and y coordinates of the sprite are not changed until later so that they can be checked
-        elif direction == 'down' and self.sprite.y < 112:
-            y += step
-        elif direction == 'right' and self.sprite.x < 112:
-            x += step
-        elif direction == 'left' and self.sprite.x > 0:
-            x -= step
-        if self.behavior == 1:
-            self.sprite.x = x
-            self.sprite.y = y
-            if not self.oOB(x, y):
-                self.doFall()
-        else:
-            if self.oOB(x, self.sprite.y):# ensures that the x and y coordinates are valid before applying them to the marble
-                self.sprite.x = x
-            if self.oOB(self.sprite.x, y):
-                self.sprite.y = y
-    def doFall(self):
-        self.parent.deathAnimation = True
-        for i in range(16):
-            self.sprite.fill -= 0x111111
-            sleep(0.5)
-        self.parent.reset()
-    def goto(self, x, y):
-        self.sprite.x = x*16
-        self.sprite.y = y*16
-
 class Maze:
     def __init__(self, width, height, g):
         self.deathAnimation = False
@@ -75,36 +28,54 @@ class Maze:
         self.paths = []# this is the list of all the paths
         self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
         self.threshold = 3
-    def reset(self, v=False):
-        self.marble.goto(0, 0)# the coordinate "0, 0" is a placeholder for now
-        self.marble.sprite.fill = 0xFFFFFF# reset the fill after the death animation
-        self.deathAnimation = False# causes the maze not to ignore inputs once the reset is complete
-        if v:
-            self.clearPaths()
-            self.generateMaze()
+    def generate(self):
+        xs = [] #stores past "moves" so that if it is stuck in corner, it can go back
+        ys = [] #same as above, but for y
+        b = 0 #how far back in the array to go
+        x = 0 #current x
+        y = 0 #current y
+        branches = random.randint(1, 3)
+        while True:
+            if b==0:
+                #if b is 0, add x and y to lists
+                xs.append(x)
+                ys.append(y)
+            else:
+                #otherwise, temporarily change x and y to be past x and y
+                x = xs[len(xs)-b-1]
+                y = ys[len(ys)-b-1]
+            failed = True #tests if failed
+            direction = random.randint(0, 4)
+            if (direction==0 or direction==4) and x+1<15 and self.board[x+1][y]==0:
+                self.board[x][y] = 1
+                x += 1
+                failed = False #sets failed to false because it succeeded
+            elif (direction==0 or direction==4) and x+1==15:
+                break
+            elif direction==1 and y+1<16 and self.board[x][y+1]==0:
+                self.board[x][y] = 1
+                y += 1
+                failed = False
+            elif direction==2 and x-1>=0 and self.board[x-1][y]==0:
+                self.board[x][y] = 1
+                x -= 1
+                failed = False
+            elif direction==3 and y-1>=0 and self.board[x][y-1]==0:
+                self.board[x][y] = 1
+                y -= 1
+                failed = False
+            if failed:
+                #if it failed, change b so that it goes back a "move"
+                print("failed") #for debugging
+                b += 1
+                if b == len(xs):
+                    #if b is too big, go back to beginning (doesn't test all posibilities above, so it will probably succeed after this)
+                    b = 0
+            elif b != 0:
+                #if it didn't fail and b isn't 0, b=0
+                b = 0
     def setMode(self, mode):
         self.marble.behavior = mode
-    def checkWin(self):# currently doesn't trigger anything
-        ## checks to see if the sprite is within twelve (12) pixels of the center coordinates of the tile marked as the goal
-        win = False
-        if abs(self.goal[0]*16 - self.marble.sprite.x) < 16 and abs(self.goal[1]*16 - self.marble.sprite.y) < 16:
-            win = True
-        if win:
-            self.reset(True)
-    def generateMaze(self, nPaths=0):# this is a placeholder, nPaths won't be used but may be passed by a caller
-        paths = ['c00-8', 'r40-5', 'c50-8', 'r70-8']# placeholder maze
-        for item in paths:
-            self.createPath(item)
-    def generateMaze2(self, nPaths=5):# nPaths will control the number of paths created, it is set this way so that it can be altered without editing the code
-        pathMap = [[0 for i in range(8)] for i in range(8)]# will store the states of the maze, will be converted to instructions later
-        for i in range(nPaths):
-            pass# it will be important to have some rules for generating the paths
-        # paths do not generate on top of each other ex: program can't do 'c00-2' then 'c00-8'
-        #  this will prevent wasting paths and will also save on processing time when doing collision checks
-        # all paths are connected to all other paths (no path is unreachable)
-        # paths do not wrap around to the next row/column ex: 'c07-9' would wrap around to the next row
-        #  that is unwanted behaivior
-        # paths can't generate side by side ex: 'c00-8' and 'c10-8' this will cause movement issues
     def clearPaths(self):# this is a debugging tool, may be usefull for generating new mazes after-
         self.paths.clear()## old ones are beaten by the player
         for i in range(64):# sets all the tiles to walls and clears the list of paths
@@ -117,23 +88,25 @@ class Maze:
         else:
             for i in range(int(string[2]), int(string[4])):
                 self.tiles[i*8+int(string[1])] = 0
-    def move(self, tilt):# allows the marble to move through the maze
-        if self.deathAnimation:
-            return None
-        if abs(tilt[0]) > self.threshold:# provides a threshold for movement
-            s1 = tilt[0]
-        if abs(tilt[1]) > self.threshold:
-            s2 = tilt[1]
-        if speed1 % 2 != 0:
-            if speed1 > 0:
-                speed1 += 1
+    def move_marble(self, tilt):
+        self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
+        self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
+        if self.direction != None:
+            change_x = round(self.speed_x)
+            change_y = round(self.speed_y)
+            if self.marble.x + change_x > 110:
+                self.marble.x = 110
+                self.speed_x = 0
+            elif self.marble.x + change_x < 0:
+                self.marble.x = 0
+                self.speed_x = 0
             else:
-                speed1 -= 1
-        if speed2 % 2 != :
-            if speed2 > 0:
-                speed2 += 1
+                self.marble.x += change_x
+            if self.marble.y + change_y> 110:
+                self.marble.y = 110
+                self.speed_y = 0
+            elif self.marble.y + change_y< 0:
+                self.marble.y = 0
+                self.speed_y = 0
             else:
-                speed2 -= 1
-        self.marble.move(direc1, speed1)# moves the marble
-        self.marble.move(direc2, speed2)
-        self.checkWin()# checks if the player has won
+                 self.marble.y += change_y
