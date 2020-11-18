@@ -145,14 +145,14 @@ class Maze:
                 ny = self.limit*-1
             else:
                 ny = self.limit
-        if nx < 0:
-            nx = 0
-        elif nx > 112:
-            nx = 112
-        if ny < 0:
-            ny = 0
-        elif ny > 112:
-            ny = 112
+        #if nx < 0:
+        #    nx = 0
+        #elif nx > 112:
+        #    nx = 112
+        #if ny < 0:
+        #    ny = 0
+        #elif ny > 112:
+        #    ny = 112
         if ny > -1 and ny < 113:
             if abs(ny - self.marble.y) > self.threshold:
                 if self.checkBounds(self.marble.x, ny):
