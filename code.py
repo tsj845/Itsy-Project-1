@@ -48,10 +48,11 @@ def run(time=0):
     for i in range(time*4):
       logic()
 
-for i in range(10000):
-  if sense.gyro[0]*5>0.5 or sense.gyro[0]*5<-0.5:
-    app.tilt[0] -= 5*sense.gyro[0]
-  if sense.gyro[1]*5>0.5 or sense.gyro[1]*5<-0.5:
-    app.tilt[1] += 5*sense.gyro[1]
-  maze.move_marble(app.tilt)
-  time.sleep(0.01)
+def run2():
+  for i in range(10000):
+    if sense.gyro[0]*5>0.5 or sense.gyro[0]*5<-0.5:
+      app.tilt[0] -= 5*sense.gyro[0]
+    if sense.gyro[1]*5>0.5 or sense.gyro[1]*5<-0.5:
+      app.tilt[1] += 5*sense.gyro[1]
+    maze.move_marble(app.tilt)
+    time.sleep(0.01)
