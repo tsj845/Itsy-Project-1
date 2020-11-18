@@ -41,7 +41,7 @@ class Maze:
     def reset(self, v=False):
         self.marble.x = 0
         self.marble.y = 0
-        self.marble.sprite.fill = 0xFFFFFF
+        self.marble.fill = 0xFFFFFF
         self.dA = False
         if v:
             self.clearPaths()
@@ -49,8 +49,8 @@ class Maze:
     def setMode(self, mode):
         self.mode = mode
     def checkWin(self):
-        xv = abs(self.goal[0]*16 - self.marble.sprite.x)
-        yv = abs(self.goal[1]*16 - self.marble.sprite.y)
+        xv = abs(self.goal[0]*16 - self.marble.x)
+        yv = abs(self.goal[1]*16 - self.marble.y)
         if xv < 16 and yv < 16:
             self.reset(True)
     def generateMaze(self, nPaths=5):
