@@ -16,18 +16,31 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, width, height, g):
-        self.deathAnimation = False
         self.width = width
         self.height = height
-        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
-                              tile_height=16, default_tile=1)
-        # self.tiles stores the color values for the maze
-        self.marble = Marble(8, 8, self)# creates a marble
-        g.append(self.tiles)# renders the maze and marble
-        g.append(self.marble.sprite)
-        self.paths = []# this is the list of all the paths
-        self.goal = (7, 7)# the goal for the maze (will contain a seperate texture later)
-        self.threshold = 3
+        self.tiles = TileGrid(sprites, pixel_shader = colors, width=16, height=16, tile_width=16,tile_height=16, default_tile=1)
+        self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.speed_x = 1 #Placeholder of 1, will represent pixels per second
+        self.speed_y = 1
+        self.board = []
+        for i in range(16):
+            self.board.append([])
+            for j in range(16):
+                self.board[i].append(0)
+        self.generate()
+        time.sleep(0.25)
+        print(self.board)
+        count = 0
+        count2 = 0
+        for i in self.board:
+            for j in i:
+                if j == 0:
+                    self.tiles[count, count2] = 0
+                count2 += 1
+            count += 1
+            count2 = 0
+        g.append(self.tiles)
+        g.append(self.marble)
     def generate(self):
         xs = [] #stores past "moves" so that if it is stuck in corner, it can go back
         ys = [] #same as above, but for y
