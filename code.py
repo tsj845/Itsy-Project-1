@@ -28,6 +28,8 @@ app.tilt = [0, 0]
 
 maze = maze_data.Maze(128, 128, g)
 
+maze.createPath('c00-8')
+
 def logic():# does the work
   app.tilt[0] -= round(sense.gyro[0])*-2
   app.tilt[1] += round(sense.gyro[1])*-2
