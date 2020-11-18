@@ -24,14 +24,16 @@ class Maze:
                              outline=0x000000) #placed at (0, 0)
         #self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         #self.speed_y = 1
+        self.goal = (7, 7)
+        self.threshold = 2
+        self.hole = Circle(self.goal[0]*16+8, self.goal[1]*16+8, 8, fill=0x777777, outline=0xDDDDDD)
         g.append(self.tiles)
+        g.append(self.hole)
         g.append(self.marble)
         self.paths = []
         self.dA = False
         self.mode = 0
-        self.goal = (7, 7)
-        self.threshold = 2
-        self.hole = Circle(self.goal[0]*16+8, self.goal[1]*16+8, 8, fill=0x777777, outline=0xDDDDDD)
+        self.limit = 8
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
@@ -51,7 +53,7 @@ class Maze:
     def checkWin(self):
         xv = abs(self.goal[0]*16 - self.marble.x)
         yv = abs(self.goal[1]*16 - self.marble.y)
-        if xv < 16 and yv < 16:
+        if xv < 8 and yv < 8:
             self.reset(True)
     def generateMaze(self, nPaths=5):
         """
@@ -120,9 +122,37 @@ class Maze:
         if self.dA:
             self.dAn
             return None
-        direction = 0.125# interesting thing is that if this changed the controls change
+        direction = 0.675# interesting thing is that if this changed the controls change
         nx = self.marble.x + round(sin(direction*2*pi)*tilt[0])
         ny = self.marble.y + round(cos(direction*2*pi)*tilt[1])
+        if nx % 2 != 0:
+            if nx < 0:
+                nx -= 1
+            else:
+                nx += 1
+        if ny % 2 != 0:
+            if ny < 0:
+                ny -= 1
+            else:
+                ny += 1
+        if abs(nx) > self.limit:
+            if nx < 0:
+                nx = self.limit*-1
+            else:
+                nx = self.limit
+        if abs(ny) > self.limit:
+            if ny < 0:
+                ny = self.limit*-1
+            else:
+                ny = self.limit
+        if nx < 0:
+            nx = 0
+        elif nx > 112:
+            nx = 112
+        if ny < 0:
+            ny = 0
+        elif ny > 112:
+            ny = 112
         if ny > -1 and ny < 113:
             if abs(ny - self.marble.y) > self.threshold:
                 if self.checkBounds(self.marble.x, ny):
