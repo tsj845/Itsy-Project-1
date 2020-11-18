@@ -120,7 +120,7 @@ class Maze:
         if self.dA:
             self.dAn
             return None
-        direction = 0.675# interesting thing is that if this changed the controls change
+        direction = 0.125# interesting thing is that if this changed the controls change
         nx = self.marble.x + round(sin(direction*2*pi)*tilt[0])
         ny = self.marble.y + round(cos(direction*2*pi)*tilt[1])
         if ny > -1 and ny < 113:
