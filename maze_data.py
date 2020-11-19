@@ -14,6 +14,10 @@ for i in range(16):# this generates the path tiles
     for i2 in range(16):
         sprites[i, i2] = 1
 
+def 2dLst(rows, cols):
+    l = [[None for col in cols] for row in rows]
+    return l
+
 class Maze:
     def __init__(self, width, height, g):
         self.width = width
@@ -42,13 +46,14 @@ class Maze:
         g.append(self.tiles)
         g.append(self.marble)
     def generate(self):
+        board = 2dLst(8, 8)
         xs = [] #stores past "moves" so that if it is stuck in corner, it can go back
         ys = [] #same as above, but for y
         b = 0 #how far back in the array to go
         x = 0 #current x
         y = 0 #current y
         branches = random.randint(1, 3)
-        while True:
+        while True:# how do you exit the loop?
             if b==0:
                 #if b is 0, add x and y to lists
                 xs.append(x)
@@ -59,22 +64,22 @@ class Maze:
                 y = ys[len(ys)-b-1]
             failed = True #tests if failed
             direction = random.randint(0, 4)
-            if (direction==0 or direction==4) and x+1<15 and self.board[x+1][y]==0:
-                self.board[x][y] = 1
+            if (direction==0 or direction==4) and x+1<15 and board[x+1][y]==0:
+                board[x][y] = 1
                 x += 1
                 failed = False #sets failed to false because it succeeded
             elif (direction==0 or direction==4) and x+1==15:
                 break
-            elif direction==1 and y+1<16 and self.board[x][y+1]==0:
-                self.board[x][y] = 1
+            elif direction==1 and y+1<16 and board[x][y+1]==0:
+                board[x][y] = 1
                 y += 1
                 failed = False
-            elif direction==2 and x-1>=0 and self.board[x-1][y]==0:
-                self.board[x][y] = 1
+            elif direction==2 and x-1>=0 and board[x-1][y]==0:
+                board[x][y] = 1
                 x -= 1
                 failed = False
-            elif direction==3 and y-1>=0 and self.board[x][y-1]==0:
-                self.board[x][y] = 1
+            elif direction==3 and y-1>=0 and board[x][y-1]==0:
+                board[x][y] = 1
                 y -= 1
                 failed = False
             if failed:
@@ -87,6 +92,51 @@ class Maze:
             elif b != 0:
                 #if it didn't fail and b isn't 0, b=0
                 b = 0
+        self.makePaths(board)
+    def makePaths(self, board):
+        for i in range(8):#testing, this way you can check the board
+            print(board[i])#testing
+        t = 'c'
+        x = 0
+        y = 0
+        z = 0
+        strings = []
+        for row in range(8):
+            for col in range(8):
+                if board[row][col] == 0:
+                    if row < 7:
+                        if board[row+1][col] == 0:
+                            t = 'r'
+                            x = col
+                            y = row
+                            r = row
+                            while board[r][col] == 0:
+                                z += 1
+                                board[r][col] = 1
+                                r += 1
+                            string = t + str(x) + str(y) + '-' + str(z)
+                            strings.append(string)
+                            t = 'c'
+                            x = 0
+                            y = 0
+                            z = 0
+                    if col < 7:
+                        if board[row][col+1] == 0:
+                            t = 'c'
+                            x = row
+                            y = col
+                            r = col
+                            while board[row][r] == 0:
+                                z += 1
+                                board[r][col] = 1
+                                r += 1
+                            string = t + str(x) + str(y) + '-' + str(z)
+                            strings.append(string)
+                            t = 'c'
+                            x = 0
+                            y = 0
+                            z = 0
+        return strings# for testing, this way you can check it
     def setMode(self, mode):
         self.marble.behavior = mode
     def clearPaths(self):# this is a debugging tool, may be usefull for generating new mazes after-
