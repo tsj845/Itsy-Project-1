@@ -98,8 +98,10 @@ class Maze:
         for row in range(8):
             for col in range(8):
                 if board[row][col] == 0:
+                    v = True
                     if row < 7:
                         if board[row+1][col] == 0:
+                            v = False
                             t = 'r'
                             x = col
                             y = row
@@ -114,7 +116,7 @@ class Maze:
                             x = 0
                             y = 0
                             z = 0
-                    if col < 7:
+                    if col < 7 and v:
                         if board[row][col+1] == 0:
                             t = 'c'
                             x = row
