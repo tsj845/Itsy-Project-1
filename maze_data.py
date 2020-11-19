@@ -20,20 +20,14 @@ def 2dLst(rows, cols):
 
 class Maze:
     def __init__(self, width, height, g):
-        self.width = width
-        self.height = height
+        #self.width = width, these were never used so i've commented them
+        #self.height = height
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=16, height=16, tile_width=16,tile_height=16, default_tile=1)
         self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
-        self.board = []
-        for i in range(16):
-            self.board.append([])
-            for j in range(16):
-                self.board[i].append(0)
         self.generate()
         time.sleep(0.25)
-        print(self.board)
         count = 0
         count2 = 0
         for i in self.board:
@@ -157,16 +151,16 @@ class Maze:
         if self.direction != None:
             change_x = round(self.speed_x)
             change_y = round(self.speed_y)
-            if self.marble.x + change_x > 110:
-                self.marble.x = 110
+            if self.marble.x + change_x > 112:
+                self.marble.x = 112
                 self.speed_x = 0
             elif self.marble.x + change_x < 0:
                 self.marble.x = 0
                 self.speed_x = 0
             else:
                 self.marble.x += change_x
-            if self.marble.y + change_y> 110:
-                self.marble.y = 110
+            if self.marble.y + change_y> 112:
+                self.marble.y = 112
                 self.speed_y = 0
             elif self.marble.y + change_y< 0:
                 self.marble.y = 0
