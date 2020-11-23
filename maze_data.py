@@ -104,26 +104,21 @@ class Maze:
     def move_marble(self, tilt):
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
-        if self.direction != None:
-            change_x = round(self.speed_x)
-            change_y = round(self.speed_y)
-            if self.marble.x + change_x > 110:
-                self.marble.x = 110
-                self.speed_x = 0
-            elif self.marble.x + change_x < 0:
-                self.marble.x = 0
-                self.speed_x = 0
-            else:
-                self.marble.x += change_x
-            if self.marble.y + change_y> 110:
-                self.marble.y = 110
-                self.speed_y = 0
-            elif self.marble.y + change_y< 0:
-                self.marble.y = 0
-                self.speed_y = 0
-            else:
-                direc2 = 'up'
-            speed2 = abs(round(tilt[1]))
-        self.marble.move(direc1, speed1)# moves the marble
-        self.marble.move(direc2, speed2)
-        self.checkWin()# checks if the player has won
+        change_x = round(self.speed_x)
+        change_y = round(self.speed_y)
+        if self.marble.x + change_x > 110:
+            self.marble.x = 110
+            self.speed_x = 0
+        elif self.marble.x + change_x < 0:
+            self.marble.x = 0
+            self.speed_x = 0
+        else:
+            self.marble.x += change_x
+        if self.marble.y + change_y> 110:
+            self.marble.y = 110
+            self.speed_y = 0
+        elif self.marble.y + change_y< 0:
+            self.marble.y = 0
+            self.speed_y = 0
+        else:
+            self.marble.y += change_y
