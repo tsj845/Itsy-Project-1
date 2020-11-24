@@ -19,8 +19,10 @@ app.tilt = [0, 0]# stores the tilt on the x and y axes
 
 maze = maze_data.Maze(128, 128, g)# creates the maze
 
-#for i in range(60):
-  #app.tilt[0] -= sense.gyro[0]
-  #app.tilt[1] += sense.gyro[1]
-  #maze.move(app.tilt)
-  #time.sleep(0.25)
+while True:
+  if 5*sense.gyro[0] > 0.5:
+    app.tilt[0] -= 5*sense.gyro[0]
+  if 5*sense.gyro[0] > 0.5:
+    app.tilt[1] += 5*sense.gyro[1]
+  maze.move_marble(app.tilt)
+  time.sleep(0.01)

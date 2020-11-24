@@ -45,6 +45,7 @@ class Maze:
         b = 0
         x = 0
         y = 0
+        branches = 0
         self.board[0][0] = True
         while True:
             if b==0:
@@ -55,39 +56,53 @@ class Maze:
                 y = ys[len(ys)-b-1]
             failed = True
             direction = random.randint(0, 4)
-            try:
-                if (direction==0 or direction==4) and x+1<7 and not self.board[x+1][y] and not self.board[x+2][y] and not self.board[x+1][y+1] and not self.board[x+1][y-1]:
-                    x += 1
-                    self.board[x][y] = True
-                    failed = False
-                elif (direction==0 or direction==4) and x+1==7:
+            if (direction==0 or direction==4) and x+1<7 and not self.rboard(x+1, y) and not self.rboard(x+2, y) and not self.rboard(x+1, y+1) and not self.rboard(x+1, y-1):
+                x += 1
+                self.board[x][y] = True
+                failed = False
+            elif (direction==0 or direction==4) and x+1==7:
+                count = 0
+                for i in self.board:
+                    for j in i:
+                        if j:
+                            count += 1
+                if branches==0:
                     x += 1
                     self.board[x][y] = True
                     xs.append(x)
                     ys.append(y)
+                    branches += 1
+                    b = random.randint(0, len(xs)-1)
+                    continue
+                elif count<32:
+                    branches += 1
+                    b = random.randint(0, len(xs)-1)
+                    continue
+                else:
                     break
-                elif direction==1 and y+1<8 and not self.board[x][y+1] and not self.board[x][y+2] and not self.board[x+1][y+1] and not self.board[x-1][y+1]:
-                    y += 1
-                    self.board[x][y] = True
-                    failed = False
-                elif direction==2 and x-1>=0 and not self.board[x-1][y] and not self.board[x-2][y] and not self.board[x-1][y+1] and not self.board[x-1][y-1]:
-                    x -= 1
-                    self.board[x][y] = True
-                    failed = False
-                elif direction==3 and y-1>=0 and not self.board[x][y-1] and not self.board[x][y-2] and not self.board[x+1][y-1] and not self.board[x-1][y-1]:
-                    y -= 1
-                    self.board[x][y] = True
-                    failed = False
-            except Exception:
-                 print(Exception)
+            elif direction==1 and y+1<8 and not self.rboard(x, y+1) and not self.rboard(x, y+2) and not self.rboard(x+1, y+1) and not self.rboard(x-1, y+1):
+                y += 1
+                self.board[x][y] = True
+                failed = False
+            elif direction==2 and x-1>=0 and not self.rboard(x-1, y) and not self.rboard(x-2, y) and not self.rboard(x-1, y+1) and not self.rboard(x-1, y-1):
+                x -= 1
+                self.board[x][y] = True
+                failed = False
+            elif direction==3 and y-1>=0 and not self.rboard(x, y-1) and not self.rboard(x, y-2) and not self.rboard(x+1, y-1) and not self.rboard(x-1, y-1):
+                y -= 1
+                self.board[x][y] = True
+                failed = False
             if failed:
                 b += 1
                 if b == len(xs):
                     b = 0
             elif b != 0:
                 b = 0
-                    
-                
+    def rboard(self, x, y):
+        if x>=0 and x<8 and y>=0 and y<8:
+            return(self.board[x][y])
+        else:
+            return(False)
 
     def getRange(self):
         return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
