@@ -16,15 +16,14 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, width, height, g):
-        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
-        self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
+                              tile_height=16, default_tile=1)
+        self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF,
+                             outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
-        self.board = []
-        for i in range(8):
-            self.board.append([])
-            for j in range(8):
-                self.board[i].append(0)
+        self.board = [[0 for i in range(8)] for i in range(8)]
+        self.paths = []
         self.generate()
         time.sleep(0.25)
         count = 0
@@ -59,7 +58,8 @@ class Maze:
             failed = True #to test if it fails or not
             direction = random.randint(0, 4) #which direction to "move"
             #checks if direction is one way and if a square there would touch other squares
-            if (direction==0 or direction==4) and x+1<7 and not self.rboard(x+1, y) and not self.rboard(x+2, y) and not self.rboard(x+1, y+1) and not self.rboard(x+1, y-1):
+            if ((direction==0 or direction==4) and x+1<7 and not self.rboard(x+1, y) and not
+                self.rboard(x+2, y) and not self.rboard(x+1, y+1) and not self.rboard(x+1, y-1)):
                 x += 1 #if it succeeds, change x
                 self.board[x][y] = True #set the square as a path
                 failed = False #did not fail
@@ -89,15 +89,18 @@ class Maze:
                 #otherwise, stop
                 else:
                     break
-            elif direction==1 and y+1<8 and not self.rboard(x, y+1) and not self.rboard(x, y+2) and not self.rboard(x+1, y+1) and not self.rboard(x-1, y+1):
+            elif (direction==1 and y+1<8 and not self.rboard(x, y+1) and not
+                self.rboard(x, y+2) and not self.rboard(x+1, y+1) and not self.rboard(x-1, y+1)):
                 y += 1
                 self.board[x][y] = True
                 failed = False
-            elif direction==2 and x-1>=0 and not self.rboard(x-1, y) and not self.rboard(x-2, y) and not self.rboard(x-1, y+1) and not self.rboard(x-1, y-1):
+            elif (direction==2 and x-1>=0 and not self.rboard(x-1, y) and not
+                self.rboard(x-2, y) and not self.rboard(x-1, y+1) and not self.rboard(x-1, y-1)):
                 x -= 1
                 self.board[x][y] = True
                 failed = False
-            elif direction==3 and y-1>=0 and not self.rboard(x, y-1) and not self.rboard(x, y-2) and not self.rboard(x+1, y-1) and not self.rboard(x-1, y-1):
+            elif (direction==3 and y-1>=0 and not self.rboard(x, y-1) and not
+                self.rboard(x, y-2) and not self.rboard(x+1, y-1) and not self.rboard(x-1, y-1)):
                 y -= 1
                 self.board[x][y] = True
                 failed = False
