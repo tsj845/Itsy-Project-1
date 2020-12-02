@@ -112,9 +112,9 @@ class Maze:
                 b = 0
     def rboard(self, x, y):
         if x>=0 and x<8 and y>=0 and y<8:
-            return(self.board[x][y])
+            return self.board[x][y]
         else:
-            return(False)
+            return False
 
     def getRange(self):
         return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
