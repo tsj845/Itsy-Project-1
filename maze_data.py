@@ -16,6 +16,8 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, width, height, g):
+        self.m2 = 1 #for callibration of sensitivity
+        self.limiter = 5
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
                               tile_height=16, default_tile=1)
         self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF,
@@ -132,23 +134,29 @@ class Maze:
                     if y >= int(path[2])*16 and y < int(path[4])*16:
                         return True
     def move_marble(self, tilt):
-        self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
-        self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
+        self.speed_x += self.m2*math.sin(tilt[0]*math.pi/180)
+        self.speed_y += self.m2*math.sin(tilt[1]*math.pi/180)
+        if abs(self.speed_x) > self.limiter:
+            if self.speed_x > 0:
+                self.speed_x = self.limiter
+            else:
+                self.speed_x = self.limiter * -1
+        if abs(self.speed_y) > self.limiter:
+            if self.speed_y > 0:
+                self.speed_y = self.limiter
+            else:
+                self.speed_y = self.limiter * -1
         change_x = round(self.speed_x)
         change_y = round(self.speed_y)
-        if self.marble.x + change_x > 110:
-            self.marble.x = 110
-            self.speed_x = 0
+        if self.marble.x + change_x > 112:
+            self.marble.x = 112
         elif self.marble.x + change_x < 0:
             self.marble.x = 0
-            self.speed_x = 0
         else:
             self.marble.x += change_x
-        if self.marble.y + change_y> 110:
-            self.marble.y = 110
-            self.speed_y = 0
-        elif self.marble.y + change_y< 0:
+        if self.marble.y + change_y > 112:
+            self.marble.y = 112
+        elif self.marble.y + change_y < 0:
             self.marble.y = 0
-            self.speed_y = 0
         else:
             self.marble.y += change_y
