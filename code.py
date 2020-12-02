@@ -19,7 +19,7 @@ app.tilt = [0, 0]# stores the tilt on the x and y axes
 
 maze = maze_data.Maze(128, 128, g)# creates the maze
 
-m = 1 #for callibration of sensitivity
+m = 1 #for callibration of sensitivity :: original multiplyer: 5
 limiter = 5
 
 while True:
