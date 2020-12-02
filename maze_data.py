@@ -1,6 +1,6 @@
 import random
 import math
-from displayio import *
+from displayio import Bitmap, Palette, TileGrid
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
 import time
