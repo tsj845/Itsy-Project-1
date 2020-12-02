@@ -32,7 +32,7 @@ class Maze:
         for i in self.board:
             for j in i:
                 if not j:
-                    self.tiles[count, count2] = 0
+                    self.tiles[count2+count*8] = 0
                 count2 += 1
             count += 1
             count2 = 0
