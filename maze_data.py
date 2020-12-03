@@ -22,6 +22,7 @@ class Maze:
                               tile_height=16, default_tile=1)
         self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF,
                              outline=0x000000) #placed randomly, for now
+        self.hole = Circle(8, 8, 8, fill=0xCCCCCC, outline=0x000000)
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
         self.board = [[0 for i in range(8)] for i in range(8)]
@@ -34,6 +35,9 @@ class Maze:
             for j in i:
                 if not j:
                     self.tiles[count2+count*8] = 0
+                    if count > 3 and count2 > 3:
+                        self.hole.x = count2*16
+                        self.hole.y = count*16
                 count2 += 1
             count += 1
             count2 = 0
