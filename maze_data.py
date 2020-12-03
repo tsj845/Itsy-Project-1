@@ -15,7 +15,7 @@ for i in range(16):# this generates the path tiles
         sprites[i, i2] = 1
 
 class Maze:
-    def __init__(self, width, height, g):
+    def __init__(self, g):
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
         self.marble = Circle(0, 0, 7, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
@@ -135,10 +135,8 @@ class Maze:
     def move_marble(self, tilt):
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
-        change_x = round(self.speed_x)
-        change_y = round(self.speed_y)
-        new_x = self.marble.x + change_x
-        new_y = self.marble.y + change_y
+        new_x = self.marble.x + round(self.speed_x)
+        new_y = self.marble.y + round(self.speed_y)
         tl = self.checkBounds(new_x, new_y)
         tr = self.checkBounds(new_x+7, new_y)
         bl = self.checkBounds(new_x, new_y+7)
