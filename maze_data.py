@@ -17,14 +17,14 @@ for i in range(16):# this generates the path tiles
 class Maze:
     def __init__(self, width, height, g):
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
-        self.marble = Circle(random.randint(0, 15)*8, random.randint(0, 15)*8, 8, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.marble = Circle(0, 0, 7, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
         self.board = []
         for i in range(8):
             self.board.append([])
             for j in range(8):
-                self.board[i].append(0)
+                self.board[i].append(False)
         self.generate()
         time.sleep(0.25)
         count = 0
@@ -38,6 +38,8 @@ class Maze:
             count2 = 0
         g.append(self.tiles)
         g.append(self.marble)
+        self.marble.x = 0
+        self.marble.y = 0
             
     def generate(self):
         xs = [] #stores prier x coords
@@ -118,34 +120,71 @@ class Maze:
 
     def getRange(self):
         return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
+
     def checkBounds(self, x, y):
-        for path in self.paths:
-            if path[0] == 'c':
-                if y == int(path[1])*16:
-                    if x >= int(path[2])*16 and x < int(path[4])*16:
-                        return True
-            else:
-                if x == int(path[1])*16:
-                    if y >= int(path[2])*16 and y < int(path[4])*16:
-                        return True
+        count1 = 0
+        for i in self.board:
+            count2 = 0
+            for j in i:
+                if x >= count1*14 and x < (count1+1)*14 and y >= count2*14 and y < (count2+1)*14:
+                    return j
+                count2 += 1
+            count1 += 1
+        return(True)
+    
     def move_marble(self, tilt):
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
         change_x = round(self.speed_x)
         change_y = round(self.speed_y)
-        if self.marble.x + change_x > 110:
+        new_x = self.marble.x + change_x
+        new_y = self.marble.y + change_y
+        tl = self.checkBounds(new_x, new_y)
+        tr = self.checkBounds(new_x+7, new_y)
+        bl = self.checkBounds(new_x, new_y+7)
+        br = self.checkBounds(new_x+7, new_y+7)
+        while not tl or not tr or not bl or not br:
+            tl = self.checkBounds(new_x, new_y)
+            tr = self.checkBounds(new_x+7, new_y)
+            bl = self.checkBounds(new_x, new_y+7)
+            br = self.checkBounds(new_x+7, new_y+7)
+            if not tl:
+                if not tr:
+                    new_y += 1
+                if not bl:
+                    new_x += 1
+                if not br or (tr and bl):
+                    new_x += 1
+                    new_y += 1
+            elif not tr:
+                if not br:
+                    new_x -= 1
+                if not bl or (tl and br):
+                    new_x -= 1
+                    new_y += 1
+            elif not bl:
+                if not br:
+                    new_y -= 1
+                if tl and tr and br:
+                    new_x += 1
+                    new_y -= 1
+            elif not br and tl and tr and bl:
+                new_x -= 1
+                new_y -= 1
+                
+        if new_x > 110:
             self.marble.x = 110
             self.speed_x = 0
-        elif self.marble.x + change_x < 0:
+        elif new_x < 0:
             self.marble.x = 0
             self.speed_x = 0
         else:
-            self.marble.x += change_x
-        if self.marble.y + change_y> 110:
+            self.marble.x = new_x
+        if new_y> 110:
             self.marble.y = 110
             self.speed_y = 0
-        elif self.marble.y + change_y< 0:
+        elif new_y< 0:
             self.marble.y = 0
             self.speed_y = 0
         else:
-            self.marble.y += change_y
+            self.marble.y = new_y
