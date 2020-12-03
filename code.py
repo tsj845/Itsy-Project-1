@@ -22,7 +22,10 @@ maze = maze_data.Maze(128, 128, g)# creates the maze
 m = 1 #for callibration of sensitivity :: original multiplyer: 5
 limiter = 5
 
-while True:
+c = 0
+
+while c < 500:
+  c += 1
   if m*sense.gyro[0] > 0.5:
     app.tilt[0] -= m*sense.gyro[0]
   if m*sense.gyro[1] > 0.5:
