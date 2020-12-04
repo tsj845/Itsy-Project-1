@@ -22,7 +22,7 @@ drag these files into the "lib" folder on the Isty
 5. ensure that the mable is not able to pass through walls
 
 ## FANCY BITS:
-1. randomly generated mazes
+1. ~~randomly generated mazes~~
 2. marble is able to roll between the two walls of a passage
 
 ## EXTRA FANCY BITS:
