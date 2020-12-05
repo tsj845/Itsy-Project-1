@@ -1,8 +1,6 @@
 from adafruit_display_text.label import Label
 import terminalio
 
-print(dir(terminalio))
-
 font = terminalio.FONT
 
-print(font)
+l = Label(font, 64, 64, color=0xFFFFFF, text="hello, world!")
