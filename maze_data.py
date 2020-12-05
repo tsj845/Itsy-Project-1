@@ -3,7 +3,11 @@ from math import sin, cos, pi
 from time import sleep
 from displayio import *
 from adafruit_display_shapes.circle import Circle
-#from adafruit_display_shapes.rect import Rect## we aren't using it right now so no need to import it
+from adafruit_display_shapes.rect import Rect
+from adafruit_display_text.label import Label
+import terminalio
+
+font = terminalio.FONT
 
 sprites = Bitmap(32, 32, 2)
 colors = Palette(2)
@@ -27,13 +31,25 @@ class Maze:
         self.goal = (7, 7)
         self.threshold = 2
         self.hole = Circle(self.goal[0]*16+8, self.goal[1]*16+8, 8, fill=0x777777, outline=0xDDDDDD)
-        g.append(self.tiles)
-        g.append(self.hole)
-        g.append(self.marble)
+        self.mGroup = Group()
+        self.mazeSub = Group()
+        self.lossSub = Group()
+        self.mazeSub.append(self.tiles)
+        self.mazeSub.append(self.hole)
+        self.mazeSub.append(self.marble)
+        self.mGroup.append(self.mazeSub)
+        self.mGroup.append(self.lossSub)
+        g.append(self.mGroup)
         self.paths = []
         self.dA = False
         self.mode = 0
         self.limit = 8
+        self.gameOver = Group()
+        self.gameOver.append(Rect(0, 0, 128, 128, fill=0x000000))
+        self.gameOver.append(Label(font, x=64, y=64, text="Game Over", fill=0xFFFFFF))
+        self.lossSub.append(self.gameOver)
+    def onGameLoss(self):
+        self.gameOver.hidden = False
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
