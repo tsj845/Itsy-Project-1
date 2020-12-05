@@ -15,7 +15,7 @@ for i in range(16):# this generates the path tiles
         sprites[i, i2] = 1
 
 class Maze:
-    def __init__(self, width, height, g):
+    def __init__(self, g):
         self.width = width
         self.height = height
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
