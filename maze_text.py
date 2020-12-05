@@ -1,6 +1,7 @@
 from adafruit_display_text.label import Label
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
+from displayio import Group
 import terminalio
 
 font = terminalio.FONT
@@ -9,10 +10,10 @@ white = 0xFFFFFF
 black = 0x000000
 
 class menu():
-    def __init__(self, g, x, y, spacing, color=0xFFFFFF, backing=0x000000, max_buttons=5):
+    def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5):
         self.maxB = max_buttons
         self.mainColor = color
-        self.backingColor = backing
+        self.backing_color = backing
         self.group = Group(max_size=max_buttons)
         g.append(self.group)
         self.button_count = 0
@@ -20,29 +21,37 @@ class menu():
         self.x = x
         self.y = y
         self.ySpacing = spacing
+        self.funcs = []
     def toggleColors(self):
         sub = self.group[self.selected_button]
         l = sub[1]
         r = sub[0]
         if l.color == white:
             l.color = black
-            l.background_color = white
+            #l.background_color = white
             r.fill = white
             r.outline = black
-    def addButton(self, text=None):
+        else:
+            l.color = white
+            r.fill = black
+            r.outline = white
+    def addButton(self, text=None, func=None):
         self.button_count += 1
         if text == None:
             text = f'Button {self.button_count}'
         subGroup = Group()
-        l = Label(font, color=self.mainColor, background_color=self.backingColor, text=text,
-                  x=self.x, y=self.y+self.button_count*self.ySpacing)
-        r = Rect(self.x, self.y/2+self.button_count*self.ySpacing, l.bounding_box[2],
-                 fill=self.backing_color, outline=self.color)
+        #background_color=self.backing_color
+        l = Label(font, color=self.mainColor, text=text,
+                  x=self.x, y=round(self.y+self.button_count*self.ySpacing))
+        #round((self.y/4*3)+self.button_count*self.ySpacing)
+        r = Rect(self.x-4, l.y-6, l.bounding_box[2]+8,
+                 l.bounding_box[3], fill=self.backing_color, outline=self.mainColor)
         subGroup.append(r)
         subGroup.append(l)
+        self.group.append(subGroup)
         if self.button_count == 1:
             self.toggleColors()
-        self.group.append(subGroup)
+        self.funcs.append(func)
     def move(self, direc):
         if direc == 'up':
             if self.selected_button > 0:
@@ -50,7 +59,11 @@ class menu():
                 self.selected_button -= 1
                 self.toggleColors()
         else:
-            if self.selected_button < self.button_count:
+            if self.selected_button < self.button_count-1:
                 self.toggleColors()
                 self.selected_button += 1
                 self.toggleColors()
+    def select(self):
+        func = self.funcs[self.selected_button]
+        if func != None:
+            func()
