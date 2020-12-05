@@ -5,6 +5,7 @@ import busio
 import time
 import pers
 import maze_data
+import maze_text
 
 sense = pers.sensor# gets a reference to the sensor
 g = Group()# creates a group to be displayed
@@ -17,7 +18,9 @@ app = storeageC()# creating an instance of the storage class
 
 app.tilt = [0, 0]# stores the tilt on the x and y axes
 
-maze = maze_data.Maze(128, 128, g)# creates the maze
+#maze = maze_data.Maze(128, 128, g)# creates the maze
+
+
 
 #for i in range(60):
   #app.tilt[0] -= sense.gyro[0]
