@@ -17,6 +17,8 @@ class Marble:
     def __init__(self, x, y, parent):
         self.parent = parent
         self.sprite = Circle(x, y, 8, fill=0xFFFFFF, outline=0x000000)# creates the marble drawn onscreen
+    def onLoseGame(self):
+        self.gameOver.hidden = False
     def oOB(self, x, y):
         for path in self.parent.paths:# checks all of the paths
             if path[0] == 'c':# this checks the orientation of the path
