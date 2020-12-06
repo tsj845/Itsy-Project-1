@@ -34,16 +34,16 @@ maze = maze_data.Maze(g)
 
 maze.createPath('c00-8')
 
-menus = Group()
-g.append(menus)
+menuGroup = Group()
+g.append(menuGroup)
 
-m = maze_text.menu(menus, 8, 0, 16)
-subm = maze_text.subMenu(menus, 8, 0, 16, parent=m)
+m = maze_text.menu(menuGroup, 8, 0, 16)
+subm = maze_text.subMenu(menuGroup, 8, 0, 16, parent=m)
 
 m.addButton(text="open sub menu", func=subm.show)
 subm.addButton(text="return to main menu", func=subm.hide)
 
-menus.mainMenu(g)
+mainMenu = menus.mainMenu(g)
 
 def logic():# does the work
   app.tilt[0] -= round(sense.gyro[0])*-2
