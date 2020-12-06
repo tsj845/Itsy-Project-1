@@ -31,15 +31,6 @@ maze = maze_data.Maze(g)
 
 maze.createPath('c00-8')
 
-menus = Group()
-
-g.append(menus)
-
-gOM = maze_text.menu(menus, 8, 64, 16)
-
-gOM.addButton(text='retry', func=maze.retry)
-gOM.addButton(text='main menu (W.I.P)', func=None)
-
 def logic():# does the work
   app.tilt[0] -= round(sense.gyro[0])*-2
   app.tilt[1] += round(sense.gyro[1])*-2
