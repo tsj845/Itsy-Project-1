@@ -12,4 +12,4 @@ class pad():
             DigitalInOut(board.A4)
             )
     def eventCheck(self):
-        print(self.pad.get_pressed())
+        pass
