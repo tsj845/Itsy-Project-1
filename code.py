@@ -9,6 +9,8 @@ import maze_text
 import buttons
 from digitalio import DigitalInOut, Direction, Pull
 
+buttonCheck = buttons.pad()
+
 led = DigitalInOut(board.BLUE_LED)
 led.direction = Direction.OUTPUT
 
