@@ -20,8 +20,6 @@ sense = pers.sensor
 g = Group()
 pers.display.show(g)
 
-menus = Group()
-
 class storeageC():
   pass
 
@@ -33,7 +31,11 @@ maze = maze_data.Maze(g)
 
 maze.createPath('c00-8')
 
-gOM = maze_text.menu(menus, 64, 64, 16)
+menus = Group()
+
+g.append(menus)
+
+gOM = maze_text.menu(menus, 8, 64, 16)
 
 gOM.addButton(text='retry', func=maze.retry)
 gOM.addButton(text='main menu (W.I.P)', func=None)
