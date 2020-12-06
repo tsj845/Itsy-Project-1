@@ -17,7 +17,10 @@ class menuHandler():
         self.menus.append(menu)
     def menuOpened(self, menu):
         if self.selectedMenu != None:
-            self.selectedMenu.hide(False)
+            x = True
+            if type(self.selectedMenu) == subMenu:
+                x = False
+            self.selectedMenu.hide(False, x)
         self.selectedMenu = menu
     def menuClosed(self, menu):
         self.selectedMenu = None
@@ -43,7 +46,8 @@ class menu():
             self.n = 2
         self.group = Group(max_size=max_buttons+self.n)
         self.group.append(Rect(0, 0, 128, 128, fill=black))
-        self.group.append(title)
+        if title != None:
+            self.group.append(title)
         g.append(self.group)
         self.group.hidden = True
         self.button_count = 0
@@ -58,7 +62,7 @@ class menu():
         self.group.hidden = False
         self.status = True
         menuHandler.menuOpened(self)
-    def hide(self, v=True):
+    def hide(self, v=True, x=True):
         self.group.hidden = True
         self.status = False
         if v:
@@ -93,11 +97,11 @@ class menu():
             self.toggleColors()
         self.funcs.append(func)
         if self.status:
-            self.hide()
+            self.hide(x=False)
             self.show()
         else:
             self.show()
-            self.hide()
+            self.hide(x=False)
     def move(self, direc):
         if direc == 'up':
             if self.selected_button > 0:
@@ -115,11 +119,33 @@ class menu():
             func()
 
 class subMenu(menu):
-    def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5, title=None):
+    def __init__(self, g, x, y, spacing, *, parent=None, color=white, backing=black, max_buttons=5,
+                 title=None):
+        if parent == None:
+            raise ValueError('keyword argument "parent" can not be "None"')
         self.maxB = max_buttons
         self.mainColor = color
         self.backing_color = backing
         self.n = 1
         if title != None:
             self.n = 2
-        self.group = Group(max_buttons+self.n)
+        self.group = Group(max_size=max_buttons+self.n)
+        self.group.append(Rect(0, 0, 128, 128, fill=black))
+        if title != None:
+            self.group.append(title)
+        g.append(self.group)
+        self.group.hidden = True
+        self.button_count = 0
+        self.selected_button = 0
+        self.x = x
+        self.y = y
+        self.ySpacing = spacing
+        self.funcs = []
+        self.status = False
+        self.parent = parent
+        menuHandler.newMenu(self)
+    def hide(self, v=True, x=True):
+        self.group.hidden = True
+        self.status = False
+        if x:
+            self.parent.show()
