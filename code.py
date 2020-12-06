@@ -26,7 +26,7 @@ app = storeageC()
 
 app.tilt = [0, 0]
 
-maze = maze_data.Maze(128, 128, g)
+maze = maze_data.Maze(g)
 
 maze.createPath('c00-8')
 
