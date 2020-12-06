@@ -32,7 +32,7 @@ class menu():
         self.group.hidden = True
         self.status = False
     def toggleColors(self):
-        sub = self.group[self.selected_button]
+        sub = self.group[self.selected_button+1]
         l = sub[1]
         r = sub[0]
         if l.color == white:
@@ -50,7 +50,7 @@ class menu():
         subGroup = Group()
         #background_color=self.backing_color
         l = Label(font, color=self.mainColor, text=text,
-                  x=self.x, y=round(self.y+self.button_count*self.ySpacing))
+                  x=self.x, y=self.y+self.button_count*self.ySpacing)
         #round((self.y/4*3)+self.button_count*self.ySpacing)
         r = Rect(self.x-4, l.y-6, l.bounding_box[2]+8,
                  l.bounding_box[3], fill=self.backing_color, outline=self.mainColor)
@@ -60,6 +60,12 @@ class menu():
         if self.button_count == 1:
             self.toggleColors()
         self.funcs.append(func)
+        if self.status:
+            self.hide()
+            self.show()
+        else:
+            self.show()
+            self.hide()
     def move(self, direc):
         if direc == 'up':
             if self.selected_button > 0:
