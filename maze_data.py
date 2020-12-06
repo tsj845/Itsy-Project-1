@@ -47,6 +47,8 @@ class Maze:
         self.gameOver.append(Label(font, x=32, y=64, text="Game Over", color=0xFFFFFF))
         self.lossSub.append(self.gameOver)
         self.gameOver.hidden = True
+    def retry(self):
+        self.reset()
     def onGameLoss(self):
         self.gameOver.hidden = False
     def dAn(self):
