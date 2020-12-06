@@ -113,3 +113,13 @@ class menu():
         func = self.funcs[self.selected_button]
         if func != None:
             func()
+
+class subMenu(menu):
+    def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5, title=None):
+        self.maxB = max_buttons
+        self.mainColor = color
+        self.backing_color = backing
+        self.n = 1
+        if title != None:
+            self.n = 2
+        self.group = Group(max_buttons+self.n)
