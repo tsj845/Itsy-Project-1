@@ -10,12 +10,16 @@ white = 0xFFFFFF
 black = 0x000000
 
 class menu():
-    def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5):
+    def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5, title=None):
         self.maxB = max_buttons
         self.mainColor = color
         self.backing_color = backing
-        self.group = Group(max_size=max_buttons+1)
+        n = 1
+        if title != None:
+            n = 2
+        self.group = Group(max_size=max_buttons+n)
         self.group.append(Rect(0, 0, 128, 128, fill=black))
+        self.group.append(title)
         g.append(self.group)
         self.group.hidden = True
         self.button_count = 0
