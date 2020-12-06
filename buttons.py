@@ -1,6 +1,6 @@
 import board
 import gamepad
-from digitalio import DigitalInOut, Direction, PULL
+from digitalio import DigitalInOut, Direction, Pull
 
 class pad():
     def __init__(self):
