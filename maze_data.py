@@ -1,3 +1,4 @@
+import maze_text
 import random
 from math import sin, cos, pi
 from time import sleep
@@ -42,15 +43,18 @@ class Maze:
         self.dA = False
         self.mode = 0
         self.limit = 8
-        self.gameOver = Group()
-        self.gameOver.append(Rect(0, 0, 128, 128, fill=0x000000))
-        self.gameOver.append(Label(font, x=32, y=64, text="Game Over", color=0xFFFFFF))
-        self.lossSub.append(self.gameOver)
-        self.gameOver.hidden = True
+        self.gameOverLabel = Label(font, x=32, y=64, text="Game Over", color=0xFFFFFF)
+        self.gOM = maze_text.menu(self.lossSub, 8, 64, 16, title=self.gameOverLabel)
+        self.gOM.addButton(text='retry', func=self.retry)
+        self.gOM.addButton(text='main menu (W.I.P)', func=None)
+        #self.gameOver.append(Rect(0, 0, 128, 128, fill=0x000000))
+        #self.lossSub.append(self.gameOver)
+        self.gOM.hide()
     def retry(self):
+        self.gOM.hide()
         self.reset()
     def onGameLoss(self):
-        self.gameOver.hidden = False
+        self.gOM.show()
     def dAn(self):
         if self.mode == 1:
             for i in range(15):
