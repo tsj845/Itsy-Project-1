@@ -26,7 +26,7 @@ class menuHandler():
             return
         if name == 'button_up':
             self.selectedMenu.move('up')
-        elif name = 'button_down':
+        elif name == 'button_down':
             self.selectedMenu.move('down')
         elif name == 'button_select':
             self.selectedMenu.select()
