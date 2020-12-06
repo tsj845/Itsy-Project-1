@@ -20,8 +20,6 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, g):
-        self.width = width
-        self.height = height
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
                               tile_height=16, default_tile=1)
         self.marble = Circle(8, 8, 8, fill=0xFFFFFF,
@@ -46,8 +44,9 @@ class Maze:
         self.limit = 8
         self.gameOver = Group()
         self.gameOver.append(Rect(0, 0, 128, 128, fill=0x000000))
-        self.gameOver.append(Label(font, x=64, y=64, text="Game Over", fill=0xFFFFFF))
+        self.gameOver.append(Label(font, x=32, y=64, text="Game Over", color=0xFFFFFF))
         self.lossSub.append(self.gameOver)
+        self.gameOver.hidden = True
     def onGameLoss(self):
         self.gameOver.hidden = False
     def dAn(self):
