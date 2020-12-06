@@ -5,6 +5,7 @@ import busio
 import time
 import pers
 import maze_data
+import maze_text
 from digitalio import DigitalInOut, Direction, Pull
 
 led = DigitalInOut(board.BLUE_LED)
@@ -18,6 +19,10 @@ switch.pull = Pull.UP
 sense = pers.sensor
 g = Group()
 pers.display.show(g)
+
+menus = Group()
+
+gOM = maze_text.menu(menus, 64, 64, 16)
 
 class storeageC():
   pass
