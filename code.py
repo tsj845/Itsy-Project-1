@@ -6,16 +6,7 @@ import time
 import pers
 import maze_data
 import maze_text
-import gamepad
 from digitalio import DigitalInOut, Direction, Pull
-
-pad = gamepad.GamePad(
-  DigitalInOut(board.A0),
-  DigitalInOut(board.A1),
-  DigitalInOut(board.A2),
-  DigitalInOut(board.A3),
-  DigitalInOut(board.A4)
-)
 
 led = DigitalInOut(board.BLUE_LED)
 led.direction = Direction.OUTPUT
