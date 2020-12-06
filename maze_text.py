@@ -14,21 +14,29 @@ class menu():
         self.maxB = max_buttons
         self.mainColor = color
         self.backing_color = backing
-        self.group = Group(max_size=max_buttons)
+        self.group = Group(max_size=max_buttons+1)
+        self.group.append(Rect(0, 0, 128, 128, fill=black))
         g.append(self.group)
+        self.group.hidden = True
         self.button_count = 0
         self.selected_button = 0
         self.x = x
         self.y = y
         self.ySpacing = spacing
         self.funcs = []
+        self.status = False
+    def show(self):
+        self.group.hidden = False
+        self.status = True
+    def hide(self):
+        self.group.hidden = True
+        self.status = False
     def toggleColors(self):
         sub = self.group[self.selected_button]
         l = sub[1]
         r = sub[0]
         if l.color == white:
             l.color = black
-            #l.background_color = white
             r.fill = white
             r.outline = black
         else:
