@@ -22,8 +22,6 @@ pers.display.show(g)
 
 menus = Group()
 
-gOM = maze_text.menu(menus, 64, 64, 16)
-
 class storeageC():
   pass
 
@@ -34,6 +32,11 @@ app.tilt = [0, 0]
 maze = maze_data.Maze(g)
 
 maze.createPath('c00-8')
+
+gOM = maze_text.menu(menus, 64, 64, 16)
+
+gOM.addButton(text='retry', func=maze.retry)
+gOM.addButton(text='main menu (W.I.P)', func=None)
 
 def logic():# does the work
   app.tilt[0] -= round(sense.gyro[0])*-2
