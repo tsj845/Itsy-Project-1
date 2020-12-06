@@ -14,16 +14,18 @@ class mainMenu():
         self.mainMenu.addButton(text="exit menu", func=self.hide)
         self.mainMenu.addButton(text="video settings", func=self.videoSettings.show)
         self.mainMenu.addButton(text="game settings", func=self.gameSettings.show)
-        self.videoSettings.addButton(text="return to main menu", func=self.hide)
+        self.videoSettings.addButton(text="return to main menu", func=self.videoSettings.hide)
         self.videoSettings.addButton(text="toggle color mode (W.I.P)", func=None)
-        self.gameSettings.addButton(text="return to main menu", func=self.hide)
+        self.gameSettings.addButton(text="return to main menu", func=self.gameSettings.hide)
         self.status = False
         self.group.hidden = True
     def move(self, direc):
         maze_text.menuHandler.event(f'button_{direc}')
     def show(self):
+        self.group.hidden = False
         self.mainMenu.show()
         self.status = True
     def hide(self):
+        self.group.hidden = True
         self.mainMenu.hide()
         self.status = False
