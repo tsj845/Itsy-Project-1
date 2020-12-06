@@ -9,6 +9,30 @@ font = terminalio.FONT
 white = 0xFFFFFF
 black = 0x000000
 
+class menuHandler():
+    def __init__(self):
+        self.menus = []
+        self.selectedMenu = None
+    def newMenu(self, menu):
+        self.menus.append(menu)
+    def menuOpened(self, menu):
+        if self.selectedMenu != None:
+            self.selectedMenu.hide(False)
+        self.selectedMenu = menu
+    def menuClosed(self, menu):
+        self.selectedMenu = None
+    def event(self, name):
+        if self.selectedMenu == None:
+            return
+        if name == 'button_up':
+            self.selectedMenu.move('up')
+        elif name = 'button_down':
+            self.selectedMenu.move('down')
+        elif name == 'button_select':
+            self.selectedMenu.select()
+
+menuHandler = menuHandler()
+
 class menu():
     def __init__(self, g, x, y, spacing, color=white, backing=black, max_buttons=5, title=None):
         self.maxB = max_buttons
@@ -29,12 +53,16 @@ class menu():
         self.ySpacing = spacing
         self.funcs = []
         self.status = False
+        menuHandler.newMenu(self)
     def show(self):
         self.group.hidden = False
         self.status = True
-    def hide(self):
+        menuHandler.menuOpened(self)
+    def hide(self, v=True):
         self.group.hidden = True
         self.status = False
+        if v:
+            menuHandler.menuClosed(self)
     def toggleColors(self):
         sub = self.group[self.selected_button+self.n]
         l = sub[1]
