@@ -1,4 +1,6 @@
+import board
 import gamepad
+from digitalio import DigitalInOut, Direction, PULL
 
 pad = gamepad.GamePad(
   DigitalInOut(board.A0),
