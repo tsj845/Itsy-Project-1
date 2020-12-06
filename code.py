@@ -6,6 +6,7 @@ import time
 import pers
 import maze_data
 import maze_text
+import buttons
 from digitalio import DigitalInOut, Direction, Pull
 
 led = DigitalInOut(board.BLUE_LED)
