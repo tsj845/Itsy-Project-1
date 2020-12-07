@@ -16,16 +16,14 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, g):
-        self.width = width
-        self.height = height
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
                               tile_height=16, default_tile=1)
-        self.marble = Circle(8, 8, 8, fill=0xFFFFFF,
+        self.marble = Circle(8, 8, 6, fill=0xFFFFFF,
                              outline=0x000000) #placed at (0, 0)
         #self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         #self.speed_y = 1
         self.goal = (7, 7)
-        self.threshold = 2
+        self.threshold = 0
         self.hole = Circle(self.goal[0]*16+8, self.goal[1]*16+8, 8, fill=0x777777, outline=0xDDDDDD)
         g.append(self.tiles)
         g.append(self.hole)
@@ -90,13 +88,13 @@ class Maze:
         if self.mode != 1:
             for path in self.paths:
                 if path[0] == 'c':
-                    if y == int(path[1])*16:
-                        if x >= int(path[2])*16 and x < int(path[4])*16:
+                    if abs(y - int(path[1])*16) < 2:
+                        if x >= int(path[2])*16-1 and x < int(path[4])*16+1:
                             good = True
                             break
                 else:
-                    if x == int(path[1])*16:
-                        if y >= int(path[2])*16 and y < int(path[4])*16:
+                    if abs(x - int(path[1])*16) < 2:
+                        if y >= int(path[2])*16-1 and y < int(path[4])*16+1:
                             good = True
                             break
         if not good:
