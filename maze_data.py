@@ -17,7 +17,7 @@ for i in range(16):# this generates the path tiles
 class Maze:
     def __init__(self, g):
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
-        self.marble = Circle(0, 0, 7, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.marble = Circle(0, 0, 6, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
         self.board = []
@@ -40,6 +40,8 @@ class Maze:
         g.append(self.marble)
         self.marble.x = 0
         self.marble.y = 0
+        self.paths = []
+        self.convertPaths()
             
     def generate(self):
         xs = [] #stores prier x coords
@@ -117,24 +119,101 @@ class Maze:
             return(self.board[x][y])
         else:
             return(False)
-
+    def convertPaths(self):
+        board = self.board.copy()
+        z = 0
+        x = 0
+        y = 0
+        t = 'c'
+        for row in range(8):
+            for col in range(8):
+                if board[row][col]:
+                    if col < 7:
+                        if board[row][col+1]:
+                            t = 'c'
+                            x = row
+                            y = col
+                            for i in range(8 - col):
+                                if not board[row][col+i]:
+                                    break
+                                board[row][col+i] = False
+                                z += 1
+                            self.paths.append(t+f'{x}{y}-{z}')
+                    if row < 7:
+                        if board[row+1][col]:
+                            t = 'r'
+                            x = col
+                            y = row
+                            for i in range(8 - row):
+                                if not board[row+i][col]:
+                                    break
+                                board[row+i][col] = False
+                                z += 1
+                            self.paths.append(t+f'{x}{y}-{z}')
+                    if row == 7 and col == 7:
+                        self.paths.append('c77-1')
     def getRange(self):
         return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
 
-    def checkBounds(self, x, y):
-        count1 = 0
-        for i in self.board:
-            count2 = 0
-            for j in i:
-                if x >= count1*14 and x < (count1+1)*14 and y >= count2*14 and y < (count2+1)*14:
-                    return j
-                count2 += 1
-            count1 += 1
-        return(True)
+    #def checkBounds(self, x, y):
+        #count1 = 0
+        #for i in self.board:
+            #count2 = 0
+            #for j in i:
+                #if x >= count1*14 and x < (count1+1)*14 and y >= count2*14 and y < (count2+1)*14:
+                    #return j
+                #count2 += 1
+            #count1 += 1
+        #return(True)
+    def checkBounds(self, x, y, info=False):
+        good = False
+        fR = 'na'
+        fR2 = 'na'
+        if True:
+            for path in self.paths:
+                if path[0] == 'c':
+                    if abs(y - int(path[1])*16) < 2:
+                        if x >= int(path[2])*16-1 and x <= int(path[4])*16+1:
+                            good = True
+                            break
+                        elif info:
+                            if x >= int(path[2])*16-1:
+                                fR = 'xb'
+                            else:
+                                fR = 'xl'
+                else:
+                    if abs(x - int(path[1])*16) < 2:
+                        if y >= int(path[2])*16-1 and y <= int(path[4])*16+1:
+                            good = True
+                            break
+                        elif info:
+                            if y >= int(path[2])*16-1:
+                                fR2 = 'yb'
+                            else:
+                                fR2 = 'yl'
+        #if not good:
+            #if self.mode == 1:
+                #self.dA = True
+                #good = True
+        if info and not good:
+            return fR + fR2
+        return good
     
     def move_marble(self, tilt):
+        limit = 8
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
+        if abs(self.speed_x) > limit:
+            if self.speed_x < 0:
+                self.speed_x = limit*-1
+            else:
+                self.speed_x = limit
+        if abs(self.speed_y) > limit:
+            if self.speed_y < 0:
+                self.speed_y = limit*-1
+            else:
+                self.speed_y = limit
+        """
         new_x = self.marble.x + round(self.speed_x)
         new_y = self.marble.y + round(self.speed_y)
         tl = self.checkBounds(new_x, new_y)
@@ -169,19 +248,46 @@ class Maze:
             elif not br and tl and tr and bl:
                 new_x -= 1
                 new_y -= 1
-                
-        if new_x > 110:
-            self.marble.x = 110
+        """
+        maxReps = 20
+        reps = 0
+        
+        new_x = self.marble.x + round(self.speed_x)
+        new_y = self.marble.y + round(self.speed_y)
+        
+        feedBack = self.checkBounds(new_x, new_y, True)
+        
+        while not self.checkBounds(new_x, new_y) and reps < maxReps:
+            if 'xb' in feedBack:
+                new_x -= 1
+            elif 'xl' in feedBack:
+                new_x += 1
+            if 'yb' in feedBack:
+                new_y -= 1
+            elif 'yl' in feedBack:
+                new_y += 1
+            feedBack = self.checkBounds(new_x, new_y, True)
+            reps += 1
+        bx = not self.checkBounds(new_x, self.marble.y)
+        by = not self.checkBounds(self.marble.x, new_y)
+        
+        if bx:
+            new_x = self.marble.x
+        if by:
+            new_y = self.marble.y
+        
+        if new_x > 112:
+            self.marble.x = 112
             self.speed_x = 0
         elif new_x < 0:
             self.marble.x = 0
             self.speed_x = 0
         else:
             self.marble.x = new_x
-        if new_y> 110:
-            self.marble.y = 110
+        if new_y > 112:
+            self.marble.y = 112
             self.speed_y = 0
-        elif new_y< 0:
+        elif new_y < 0:
             self.marble.y = 0
             self.speed_y = 0
         else:
