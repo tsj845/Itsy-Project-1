@@ -172,7 +172,7 @@ class Maze:
         if True:
             for path in self.paths:
                 if path[0] == 'c':
-                    if abs(y - int(path[1])*16) < 2:
+                    if abs(y - int(path[1])*16) < 3:
                         if x >= int(path[2])*16-1 and x <= int(path[4])*16+1:
                             good = True
                             break
@@ -182,7 +182,7 @@ class Maze:
                             else:
                                 fR = 'xl'
                 else:
-                    if abs(x - int(path[1])*16) < 2:
+                    if abs(x - int(path[1])*16) < 3:
                         if y >= int(path[2])*16-1 and y <= int(path[4])*16+1:
                             good = True
                             break
@@ -198,7 +198,11 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
-    
+    def calcTouching(self):
+        #note that this is really inneficent
+        for x in range(self.marble.x, self.marble.x+radius):
+            for y in range(self.marble.y, self.marble.y+radius):
+                pass
     def move_marble(self, tilt):
         limit = 8
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
@@ -255,8 +259,12 @@ class Maze:
         new_x = self.marble.x + round(self.speed_x)
         new_y = self.marble.y + round(self.speed_y)
         
-        feedBack = self.checkBounds(new_x, new_y, True)
+        if not self.checkBounds(new_x, new_y):
+            new_x = 0
+            new_y = 0
         
+        #feedBack = self.checkBounds(new_x, new_y, True)
+        """
         while not self.checkBounds(new_x, new_y) and reps < maxReps:
             if 'xb' in feedBack:
                 new_x -= 1
@@ -275,7 +283,7 @@ class Maze:
             new_x = self.marble.x
         if by:
             new_y = self.marble.y
-        
+        """
         if new_x > 112:
             self.marble.x = 112
             self.speed_x = 0
