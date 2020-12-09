@@ -205,6 +205,7 @@ class Maze:
                 pass
     def move_marble(self, tilt):
         limit = 8
+        old_speeds = (self.speed_x, self.speed_y)
         self.speed_x += 10*math.sin(tilt[0]*math.pi/180)
         self.speed_y += 10*math.sin(tilt[1]*math.pi/180)
         if abs(self.speed_x) > limit:
@@ -260,8 +261,9 @@ class Maze:
         new_y = self.marble.y + round(self.speed_y)
         
         if not self.checkBounds(new_x, new_y):
-            new_x = 0
-            new_y = 0
+            self.speed_x = old_speeds[0]
+            self.speed_y = old_speeds[1]
+            return
         
         #feedBack = self.checkBounds(new_x, new_y, True)
         """
