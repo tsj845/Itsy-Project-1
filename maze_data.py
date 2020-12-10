@@ -14,10 +14,81 @@ for i in range(16):# this generates the path tiles
     for i2 in range(16):
         sprites[i, i2] = 1
 
+def sdfLen(n):
+    if type(n) == int:
+        return math.sqrt(n**2)
+    else:
+        return math.sqrt(n.x**2 + n.y**2)
+
+def max2(n1, n2):
+    if type(n1) == int and not type(n2) == int:
+        n3 = n2
+        n2 = n1
+        n1 = n3
+    if type(n2) == int:
+        v1 = max(n1.x, n2)
+        v2 = max(n1.y, n2)
+        if v1 == n2 and v2 == n2:
+            return n2
+        else:
+            return vec2(v1, v2)
+    else:
+        return vec2(max(n1.x, n2.x), max(n1.y, n2.y))
+
+class vec2():
+    def __init__(self, x, y=None):
+        if y == None:
+            self.x = x.x
+            self.y = x.y
+        else:
+            self.x = x
+            self.y = y
+    def __add__(self, n):
+        if type(n) == int:
+            return vec2(self.x+n, self.y+n)
+        else:
+            return vec2(self.x+n.x, self.y+n.y)
+    def __sub__(self, n):
+        if type(n) == int:
+            return vec2(self.x-n, self.y-n)
+        else:
+            return vec2(self.x-n.x, self.y-n.y)
+    def __abs__(self):
+        return vec2(abs(self.x), abs(self.y))
+
+def boxSDF(p, b, d, r, *, x=0, y=0):
+    p += vec2(x, y)
+    b += vec2(x, y)
+    print(p.x, p.y, 'p x,y')
+    print(b.x, b.y, 'b x,y')
+    q = vec2(abs(p)-b)
+    print(q.x, q.y, 'q x,y')
+    #s1 = not q.x >= 0
+    #s2 = not q.y >= 0
+    if q.x < 0 and q.y < 0:
+        q += r
+    dist = sdfLen(max2(q, 0) + min(max(q.x, q.y), 0))
+    #if q.x < 0 and q.y < 0:
+    #    pass
+    print(dist, 'dist')
+    #if s1 and s2:
+    #    dist *= -1
+    return dist
+
+def boxSDF2(p, b, x, y):
+    rx = b.x
+    ry = b.y
+    px = p.x
+    py = p.y
+    d = math.sqrt(max(px-rx,0)**2 + max(py-ry,0)**2)
+
+print(boxSDF(vec2(-1, -1), vec2(10, 10), vec2(10, 10), 6, x=10, y=10))
+
 class Maze:
     def __init__(self, g):
+        self.radius = 6
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
-        self.marble = Circle(0, 0, 6, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.marble = Circle(0, 0, self.radius, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
         self.board = []
@@ -165,6 +236,28 @@ class Maze:
                 #count2 += 1
             #count1 += 1
         #return(True)
+    def getTiles(self):
+        x = self.marble.x + round(self.radius / 2)
+        y = self.marble.y + round(self.radius / 2)
+        xf = True
+        yf = True
+        for i in range(8):
+            i *= 16
+            i += 16
+            if xf:
+                if x < i:
+                    x = i - 8
+                    xf = False
+            if yf:
+                if y < i:
+                    y = i - 8
+                    yf = False
+            if not xf and not yf:
+                break
+        from lookup import table
+        lst = table[(x, y)]
+        table = None
+        return lst
     def checkBounds(self, x, y, info=False):
         good = False
         fR = 'na'
