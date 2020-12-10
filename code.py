@@ -24,7 +24,9 @@ tDif = time.monotonic() - t1
 
 tDel = round(tDif, 2)+0.2
 #print(maze.getTiles())
-print(maze.checkTiles(maze.getTiles()))
+t = maze.getTiles()
+print(maze.checkTiles(t))
+print(maze.collisionCheck(maze.checkTiles(t)))
 """
 while True:
   if sense.gyro[0]*3>0.5 or sense.gyro[0]*3<-0.5:
