@@ -287,8 +287,8 @@ class Maze:
         mcx = self.marble.x + hr
         mcy = self.marble.y + hr
         for item in lst:
-            d = boxSDF(vec2(mcx, mcy), vec2(16, 16), vec2(16, 16), 6, x=item[0]*16, y=item[1]*16)
-            if d <= 0:
+            d = boxSDF(vec2(mcx, mcy), vec2(16, 16), vec2(16, 16), self.radius, x=item[0]*16, y=item[1]*16)
+            if d-self.radius <= 0:
                 tiles.append(item)
         return tiles
     def checkBounds(self, x, y, info=False):
