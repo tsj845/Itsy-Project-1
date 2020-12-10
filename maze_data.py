@@ -59,18 +59,18 @@ class vec2():
 def boxSDF(p, b, d, r, *, x=0, y=0):
     p += vec2(x, y)
     b += vec2(x, y)
-    print(p.x, p.y, 'p x,y')
-    print(b.x, b.y, 'b x,y')
+    #print(p.x, p.y, 'p x,y')
+    #print(b.x, b.y, 'b x,y')
     q = vec2(abs(p)-b)
-    print(q.x, q.y, 'q x,y')
+    #print(q.x, q.y, 'q x,y')
     #s1 = not q.x >= 0
     #s2 = not q.y >= 0
-    if q.x < 0 and q.y < 0:
+    if q.x < b.x and q.x > b.x-d.x and q.y < b.y and q.y > b.y-d.y:
         q += r
     dist = sdfLen(max2(q, 0) + min(max(q.x, q.y), 0))
     #if q.x < 0 and q.y < 0:
     #    pass
-    print(dist, 'dist')
+    #print(dist, 'dist')
     #if s1 and s2:
     #    dist *= -1
     return dist
@@ -223,9 +223,6 @@ class Maze:
                             self.paths.append(t+f'{x}{y}-{z}')
                     if row == 7 and col == 7:
                         self.paths.append('c77-1')
-    def getRange(self):
-        return 16#checks the top-left quadrent, be aware, optimisation is required b/c 64 is too many
-
     #def checkBounds(self, x, y):
         #count1 = 0
         #for i in self.board:
@@ -291,6 +288,11 @@ class Maze:
             if d-self.radius <= 0:
                 tiles.append(item)
         return tiles
+    def collisionCheck(self, lst):
+        for item in lst:
+            if self.tiles[item[0], item[1]] == 0:
+                return False
+        return True
     def checkBounds(self, x, y, info=False):
         good = False
         fR = 'na'
@@ -324,11 +326,6 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
-    def calcTouching(self):
-        #note that this is really inneficent
-        for x in range(self.marble.x, self.marble.x+radius):
-            for y in range(self.marble.y, self.marble.y+radius):
-                pass
     def move_marble(self, tilt):
         limit = 8
         old_speeds = (self.speed_x, self.speed_y)
