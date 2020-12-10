@@ -246,17 +246,22 @@ class Maze:
             i += 16
             if xf:
                 if x < i:
-                    x = i - 8
+                    x = round((i - 16) / 16)
                     xf = False
             if yf:
                 if y < i:
-                    y = i - 8
+                    y = round((i - 16) / 16)
                     yf = False
             if not xf and not yf:
                 break
         from lookup import table
-        lst = table[(x, y)]
+        lstX = table[x]
+        lstY = table[y]
         table = None
+        lst = []
+        for i in range(8):
+            for i2 in range(8):
+                lst.append((lstX[i2],lstY[i]))
         return lst
     def checkBounds(self, x, y, info=False):
         good = False
