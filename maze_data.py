@@ -75,14 +75,14 @@ def boxSDF(p, b, d, r, *, x=0, y=0):
     #    dist *= -1
     return dist
 
-def boxSDF2(p, b, x, y):
-    rx = b.x
-    ry = b.y
-    px = p.x
-    py = p.y
-    d = math.sqrt(max(px-rx,0)**2 + max(py-ry,0)**2)
+#def boxSDF2(p, b, x, y):
+#    rx = b.x
+#    ry = b.y
+#    px = p.x
+#    py = p.y
+#    d = math.sqrt(max(px-rx,0)**2 + max(py-ry,0)**2)
 
-print(boxSDF(vec2(-1, -1), vec2(10, 10), vec2(10, 10), 6, x=10, y=10))
+#print(boxSDF(vec2(-1, -1), vec2(10, 10), vec2(10, 10), 6, x=10, y=10))
 
 class Maze:
     def __init__(self, g):
@@ -255,14 +255,14 @@ class Maze:
             if not xf and not yf:
                 break
         tableX = {
-            0:[0, 1, 2],#, 8, 9, 10, 16, 17, 18],
-            1:[0, 1, 2],#, 8, 9, 10, 16, 17, 18],
-            2:[1, 2, 3],#, 9, 10, 11, 17, 18, 19],
-            3:[2, 3, 4],#, 10, 11, 12, 18, 19, 20],
-            4:[3, 4, 5],#, 11, 12, 13, 19, 20, 21],
-            5:[4, 5, 6],#, 12, 13, 14, 20, 21, 22],
-            6:[5, 6, 7],#, 13, 14, 15, 21, 22, 23],
-            7:[5, 6, 7],#, 13, 14, 15, 21, 22, 23]
+            0:[0, 1, 2],
+            1:[0, 1, 2],
+            2:[1, 2, 3],
+            3:[2, 3, 4],
+            4:[3, 4, 5],
+            5:[4, 5, 6],
+            6:[5, 6, 7],
+            7:[5, 6, 7],
         }
         tableY = {
             0:[0, 1, 2],
@@ -281,6 +281,16 @@ class Maze:
             for i2 in range(3):
                 lst.append((lstX[i2],lstY[i]))
         return lst
+    def checkTiles(self, lst):
+        tiles = []
+        hr = round(self.radius/2)
+        mcx = self.marble.x + hr
+        mcy = self.marble.y + hr
+        for item in lst:
+            d = boxSDF(vec2(mcx, mcy), vec2(16, 16), vec2(16, 16), 6, x=item[0]*16, y=item[1]*16)
+            if d <= 0:
+                tiles.append(item)
+        return tiles
     def checkBounds(self, x, y, info=False):
         good = False
         fR = 'na'
