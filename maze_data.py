@@ -5,6 +5,8 @@ from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.rect import Rect
 import time
 
+random.seed(10)
+
 sprites = Bitmap(32, 32, 2)
 colors = Palette(2)
 colors[0] = 0x000000
@@ -57,12 +59,12 @@ class vec2():
         return vec2(abs(self.x), abs(self.y))
 
 def boxSDF(p, b, d, r, *, x=0, y=0):
-    p += vec2(x, y)
+    #p += vec2(round(x/2), round(y/2))
     b += vec2(x, y)
-    #print(p.x, p.y, 'p x,y')
-    #print(b.x, b.y, 'b x,y')
+    print(p.x, p.y, 'p x,y')
+    print(b.x, b.y, 'b x,y')
     q = vec2(abs(p)-b)
-    #print(q.x, q.y, 'q x,y')
+    print(q.x, q.y, 'q x,y')
     #s1 = not q.x >= 0
     #s2 = not q.y >= 0
     if q.x < b.x and q.x > b.x-d.x and q.y < b.y and q.y > b.y-d.y:
@@ -70,7 +72,7 @@ def boxSDF(p, b, d, r, *, x=0, y=0):
     dist = sdfLen(max2(q, 0) + min(max(q.x, q.y), 0))
     #if q.x < 0 and q.y < 0:
     #    pass
-    #print(dist, 'dist')
+    print(dist, 'dist')
     #if s1 and s2:
     #    dist *= -1
     return dist
@@ -233,9 +235,9 @@ class Maze:
                 #count2 += 1
             #count1 += 1
         #return(True)
-    def getTiles(self):
-        x = self.marble.x + round(self.radius / 2)
-        y = self.marble.y + round(self.radius / 2)
+    def getTiles(self, x, y):
+        x = x + round(self.radius / 2)
+        y = y + round(self.radius / 2)
         xf = True
         yf = True
         for i in range(8):
@@ -252,48 +254,67 @@ class Maze:
             if not xf and not yf:
                 break
         tableX = {
-            0:[0, 1, 2],
+            0:[0, 1],
             1:[0, 1, 2],
             2:[1, 2, 3],
             3:[2, 3, 4],
             4:[3, 4, 5],
             5:[4, 5, 6],
             6:[5, 6, 7],
-            7:[5, 6, 7],
+            7:[6, 7],
         }
         tableY = {
-            0:[0, 1, 2],
+            0:[0, 1],
             1:[0, 1, 2],
             2:[1, 2, 3],
             3:[2, 3, 4],
             4:[3, 4, 5],
             5:[4, 5, 6],
             6:[5, 6, 7],
-            7:[5, 6, 7]
+            7:[6, 7]
         }
         lstX = tableX[x]
         lstY = tableY[y]
         lst = []
-        for i in range(3):
-            for i2 in range(3):
+        for i in range(len(lstY)):
+            for i2 in range(len(lstX)):
                 lst.append((lstX[i2],lstY[i]))
         return lst
-    def checkTiles(self, lst):
+    def checkTiles(self, lst, x, y):
         tiles = []
         hr = round(self.radius/2)
-        mcx = self.marble.x + hr
-        mcy = self.marble.y + hr
+        mcx = x + hr
+        mcy = y + hr
         for item in lst:
-            d = boxSDF(vec2(mcx, mcy), vec2(16, 16), vec2(16, 16), self.radius, x=item[0]*16, y=item[1]*16)
+            cx = item[0]*16+8
+            cy = item[1]*16+8
+            if True:#mcx > cx and mcy < cy:
+                px = mcx
+                py = mcy
+            elif mcx > cx:
+                px = mcx
+                py = mcy - (mcy - cy)*2
+            elif mcy < cy:
+                px = mcx + (cx - mcx)*2
+                py = mcy
+            else:
+                px = mcx + (cx - mcx)*2
+                py = mcy - (mcy - cy)*2
+            d = boxSDF(vec2(px, py), vec2(16, 16), vec2(16, 16), self.radius,
+                       x=cx, y=cy)
+            print(item, d)
             if d-self.radius <= 0:
                 tiles.append(item)
         return tiles
     def collisionCheck(self, lst):
+        result = True
         for item in lst:
-            if self.tiles[item[0], item[1]] == 0:
-                return False
-        return True
-    def checkBounds(self, x, y, info=False):
+            if self.tiles[item[0]*8+item[1]] == 0:
+                result = False
+                break
+        #print(result)
+        return result
+    def checkBoundsOld(self, x, y, info=False):
         good = False
         fR = 'na'
         fR2 = 'na'
@@ -326,6 +347,18 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
+    def checkBounds(self, x, y):
+        """
+        ox = self.marble.x
+        oy = self.marble.y
+        self.marble.x = x
+        self.marble.y = y
+        result = self.collisionCheck(self.checkTiles(self.getTiles()))
+        self.marble.x = ox
+        self.marble.y = oy
+        return result
+        """
+        return self.collisionCheck(self.checkTiles(self.getTiles(x, y), x, y))
     def move_marble(self, tilt):
         limit = 8
         old_speeds = (self.speed_x, self.speed_y)
@@ -383,10 +416,34 @@ class Maze:
         new_x = self.marble.x + round(self.speed_x)
         new_y = self.marble.y + round(self.speed_y)
         
-        if not self.checkBounds(new_x, new_y):
-            self.speed_x = old_speeds[0]
-            self.speed_y = old_speeds[1]
-            return
+        if not self.checkBounds(new_x, self.marble.y):
+            lr = self.speed_x < 0
+            #self.speed_x = old_speeds[0]
+            reps = 0
+            while not self.checkBounds(new_x, self.marble.y) and reps < maxReps:
+                if lr:
+                    new_x += 1
+                    self.speed_x += 1
+                else:
+                    new_x -= 1
+                    self.speed_x -= 1
+            if not self.checkBounds(new_x, self.marble.y):
+                self.speed_x = old_speeds[0]
+                new_x = self.marble.x
+        if not self.checkBounds(self.marble.x, new_y):
+            ud = self.speed_y < 0
+            #self.speed_y = old_speeds[1]
+            reps = 0
+            while not self.checkBounds(self.marble.x, new_y) and reps < maxReps:
+                if ud:
+                    new_y += 1
+                    self.speed_y += 1
+                else:
+                    new_y -= 1
+                    self.speed_y -= 1
+            if not self.checkBounds(self.marble.x, new_y):
+                self.speed_y = old_speeds[1]
+                new_y = self.marble.y
         
         #feedBack = self.checkBounds(new_x, new_y, True)
         """
