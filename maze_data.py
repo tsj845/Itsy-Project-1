@@ -17,7 +17,8 @@ for i in range(16):# this generates the path tiles
 class Maze:
     def __init__(self, g):
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
-        self.marble = Circle(0, 0, 6, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.marble = Circle(3, 3, 6, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
+        self.marbleRadius = 3
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
         self.speed_y = 1
         self.board = []
@@ -165,7 +166,7 @@ class Maze:
                 #count2 += 1
             #count1 += 1
         #return(True)
-    def checkBounds(self, x, y, info=False):
+    def checkBoundsOLD(self, x, y, info=False):
         good = False
         fR = 'na'
         fR2 = 'na'
@@ -198,11 +199,28 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
-    def calcTouching(self):
-        #note that this is really inneficent
-        for x in range(self.marble.x, self.marble.x+radius):
-            for y in range(self.marble.y, self.marble.y+radius):
-                pass
+    def pixelColor(self, xp, yp):
+        table = {
+            128:7,
+            112:6,
+            96:5,
+            80:4,
+            64:3,
+            48:2,
+            32:1,
+            16:0,
+        }
+        xC = -1
+        yC = -1
+        for i in range(8):
+            i = i * 16 + 16
+            if xC == -1:
+                if i >= xC:
+                    xC = table[i]
+            if yC == -1:
+                if i >= yC:
+                    yC = table[i]
+        return self.tiles[yC*8+xC]
     def move_marble(self, tilt):
         limit = 8
         old_speeds = (self.speed_x, self.speed_y)
@@ -218,74 +236,16 @@ class Maze:
                 self.speed_y = limit*-1
             else:
                 self.speed_y = limit
-        """
         new_x = self.marble.x + round(self.speed_x)
         new_y = self.marble.y + round(self.speed_y)
-        tl = self.checkBounds(new_x, new_y)
-        tr = self.checkBounds(new_x+7, new_y)
-        bl = self.checkBounds(new_x, new_y+7)
-        br = self.checkBounds(new_x+7, new_y+7)
-        while not tl or not tr or not bl or not br:
-            tl = self.checkBounds(new_x, new_y)
-            tr = self.checkBounds(new_x+7, new_y)
-            bl = self.checkBounds(new_x, new_y+7)
-            br = self.checkBounds(new_x+7, new_y+7)
-            if not tl:
-                if not tr:
-                    new_y += 1
-                if not bl:
-                    new_x += 1
-                if not br or (tr and bl):
-                    new_x += 1
-                    new_y += 1
-            elif not tr:
-                if not br:
-                    new_x -= 1
-                if not bl or (tl and br):
-                    new_x -= 1
-                    new_y += 1
-            elif not bl:
-                if not br:
-                    new_y -= 1
-                if tl and tr and br:
-                    new_x += 1
-                    new_y -= 1
-            elif not br and tl and tr and bl:
-                new_x -= 1
-                new_y -= 1
-        """
-        maxReps = 20
-        reps = 0
-        
-        new_x = self.marble.x + round(self.speed_x)
-        new_y = self.marble.y + round(self.speed_y)
-        
-        if not self.checkBounds(new_x, new_y):
-            self.speed_x = old_speeds[0]
-            self.speed_y = old_speeds[1]
-            return
-        
-        #feedBack = self.checkBounds(new_x, new_y, True)
-        """
-        while not self.checkBounds(new_x, new_y) and reps < maxReps:
-            if 'xb' in feedBack:
-                new_x -= 1
-            elif 'xl' in feedBack:
-                new_x += 1
-            if 'yb' in feedBack:
-                new_y -= 1
-            elif 'yl' in feedBack:
-                new_y += 1
-            feedBack = self.checkBounds(new_x, new_y, True)
-            reps += 1
-        bx = not self.checkBounds(new_x, self.marble.y)
-        by = not self.checkBounds(self.marble.x, new_y)
-        
-        if bx:
-            new_x = self.marble.x
-        if by:
-            new_y = self.marble.y
-        """
+        for yp in range(self.marble.y, new_y):
+            if self.pixelColor(self.marble.x, yp) == 0:
+                new_y = yp-1-self.marbleRadius
+                break
+        for xp in range(self.marble.x, new_x):
+            if self.pixelColor(xp, self.marble.y) == 0:
+                new_x = xp-1-self.marbleRadius
+                break
         if new_x > 112:
             self.marble.x = 112
             self.speed_x = 0
