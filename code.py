@@ -18,11 +18,11 @@ app = storeageC()# creating an instance of the storage class
 app.tilt = [0, 0]# stores the tilt on the x and y axes
 
 maze = maze_data.Maze(g)# creates the maze
-t1 = time.monotonic()
-maze.move_marble([0, 0])
-tDif = time.monotonic() - t1
+#t1 = time.monotonic()
+#maze.move_marble([0, 0])
+#tDif = time.monotonic() - t1
 
-tDel = round(tDif, 2)+0.2
+#tDel = round(tDif, 2)+0.2
 
 while True:
   if sense.gyro[0]*3>0.5 or sense.gyro[0]*3<-0.5:
@@ -30,4 +30,4 @@ while True:
   if sense.gyro[1]*3>0.5 or sense.gyro[1]*3<-0.5:
     app.tilt[1] += 3*sense.gyro[1]
   maze.move_marble(app.tilt)
-  time.sleep(tDel)
+  time.sleep(0.01)
