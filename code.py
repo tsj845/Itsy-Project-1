@@ -24,6 +24,9 @@ maze = maze_data.Maze(g)# creates the maze
 
 #tDel = round(tDif, 2)+0.2
 
+def cc(x, y):
+    maze.move_marble([x, y])
+"""
 while True:
   if sense.gyro[0]*3>0.5 or sense.gyro[0]*3<-0.5:
     app.tilt[0] -= 3*sense.gyro[0]
@@ -31,3 +34,4 @@ while True:
     app.tilt[1] += 3*sense.gyro[1]
   maze.move_marble(app.tilt)
   time.sleep(0.01)
+"""
