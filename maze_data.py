@@ -18,7 +18,8 @@ for i in range(16):# this generates the path tiles
 
 class Maze:
     def __init__(self, g):
-        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
+        self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,
+                              tile_height=16, default_tile=1)
         self.marble = Circle(3, 3, 6, fill=0xFFFFFF, outline=0x000000) #placed randomly, for now
         self.marbleRadius = 3
         self.speed_x = 1 #Placeholder of 1, will represent pixels per second
@@ -45,7 +46,9 @@ class Maze:
         self.marble.y = 0
         self.paths = []
         self.convertPaths()
-            
+    def reset(self):
+        self.marble.x = 0
+        self.marble.y = 0
     def generate(self):
         xs = [] #stores prier x coords
         ys = [] #stores prier y coords
@@ -217,22 +220,26 @@ class Maze:
         for i in range(8):
             c = i * 16 + 16
             if xC == -1:
-                if c >= xp:
-                    print(c, 'xC')
+                if c >= xp + self.marbleRadius * 2:
+                    #print(c, 'xC', i)
                     xC = table[c]
             if yC == -1:
-                if c >= yp:
-                    print(c, 'yC')
+                if c >= yp + self.marbleRadius * 2:
+                    #print(c, 'yC', i)
                     yC = table[c]
-        print(yC, xC, self.tiles[yC*8+xC], 'tile x y v', xp, yp, ' x y p')
+        #print(yC, xC, self.tiles[yC*8+xC], 'tile x y v', xp, yp, ' x y p')
+        if xC == -1:
+            xC = 7
+        if yC == -1:
+            yC = 7
         return self.tiles[yC*8+xC]
     def printTest(self):
         print('maze print test')
     def move_marble(self, tilt):
         limit = 8
         old_speeds = (self.speed_x, self.speed_y)
-        self.speed_x += 4*math.sin(tilt[0]*math.pi/180)
-        self.speed_y += 4*math.sin(tilt[1]*math.pi/180)
+        self.speed_x += 1*math.sin(tilt[0]*math.pi/180)
+        self.speed_y += 1*math.sin(tilt[1]*math.pi/180)
         if abs(self.speed_x) > limit:
             if self.speed_x < 0:
                 self.speed_x = limit*-1
@@ -245,34 +252,42 @@ class Maze:
                 self.speed_y = limit
         new_x = self.marble.x + round(self.speed_x)
         new_y = self.marble.y + round(self.speed_y)
-        if new_y > self.marble.y:#+self.marbleRadius*2:
-            for yp in range(self.marble.y+self.marbleRadius*2, new_y+self.marbleRadius*2):
-                print(yp, 'yp ny>')
-                if self.pixelColor(self.marble.x+self.marbleRadius, yp+self.marbleRadius*2) == 0:
-                    new_y = yp-1-self.marbleRadius
-                    print(new_y, 'newy')
-                    break
-        else:#if new_y < self.marble.y:
-            for yp in range(new_y, self.marble.y):
-                print(yp, 'yp ny<')
-                if self.pixelColor(self.marble.x+self.marbleRadius, yp) == 0:
-                    new_y = yp+1+self.marbleRadius
-                    print(new_y, 'newy')
-                    break
-        if new_x > self.marble.x:#+self.marbleRadius*2:
-            for xp in range(self.marble.x+self.marbleRadius*2, new_x+self.marbleRadius*2):
-                print(xp, 'xp nx>')
-                if self.pixelColor(xp+self.marbleRadius*2, self.marble.y+self.marbleRadius) == 0:
-                    new_x = xp-1-self.marbleRadius
-                    print(new_x, 'newx')
-                    break
-        else:#if new_x < self.marble.x:
-            for xp in range(new_x, self.marble.x):
-                print(xp, 'xp nx<')
-                if self.pixelColor(xp, self.marble.y+self.marbleRadius) == 0:
-                    new_x = xp+1+self.marbleRadius
-                    print(new_x, 'newx')
-                    break
+        for p in range(2):
+            m1 = 0
+            if p == 1:
+                m1 = round(self.marbleRadius/2)
+            if self.speed_y > 0:#+self.marbleRadius*2:
+                for yp in range(self.marble.y-self.marbleRadius*2+m1, new_y-self.marbleRadius*2+m1):
+                    #print(yp, 'yp ny>')
+                    if self.pixelColor(self.marble.x-self.marbleRadius+m1, yp-self.marbleRadius*2) == 0:
+                        new_y = yp-1-self.marbleRadius
+                        #print(new_y, 'newy')
+                        break
+            else:#if new_y < self.marble.y:
+                for yp in range(new_y-m1, self.marble.y-m1):
+                    #print(yp, 'yp ny<')
+                    if self.pixelColor(self.marble.x+self.marbleRadius-m1, yp) == 0:
+                        new_y = yp+1+self.marbleRadius
+                        #print(new_y, 'newy')
+                        break
+        for p in range(2):
+            m1 = 0
+            if p == 1:
+                m1 = round(self.marbleRadius/2)
+            if self.speed_x > 0:#+self.marbleRadius*2:
+                for xp in range(self.marble.x-self.marbleRadius*2+m1, new_x-self.marbleRadius*2+m1):
+                    #print(xp, 'xp nx>')
+                    if self.pixelColor(xp-self.marbleRadius*2, self.marble.y-self.marbleRadius+m1) == 0:
+                        new_x = xp-1-self.marbleRadius
+                        #print(new_x, 'newx')
+                        break
+            else:#if new_x < self.marble.x:
+                for xp in range(new_x-m1, self.marble.x-m1):
+                    #print(xp, 'xp nx<')
+                    if self.pixelColor(xp, self.marble.y+self.marbleRadius-m1) == 0:
+                        new_x = xp+1+self.marbleRadius
+                        #print(new_x, 'newx')
+                        break
         if new_x > 112:
             self.marble.x = 112
             self.speed_x = 0
