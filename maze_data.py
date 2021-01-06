@@ -14,6 +14,26 @@ for i in range(16):# this generates the path tiles
     for i2 in range(16):
         sprites[i, i2] = 1
 
+def hitsRect(cd, rd):
+    cx = cd[0]
+    cy = cd[1]
+    cr = cd[2]
+    rx = rd[0] + round(rd[2]/2)
+    ry = rd[1] + round(rd[3]/2)
+    rw = rd[2]
+    rh = rd[3]
+    
+    dx = abs(cx - rx)
+    dy = abs(cy - ry)
+    
+    if dx > rw/2 + cr or dy > rh/2 + cr:
+        return False
+    if dx <= rw/2 or dy <= rh/2:
+        return True
+    cDist_sq = (dx - rw/2) ** 2 + (dy - rh/2) ** 2
+    
+    return cDist_sq <= cr ** 2
+
 class Maze:
     def __init__(self, g):
         self.tiles = TileGrid(sprites, pixel_shader = colors, width=8, height=8, tile_width=16,tile_height=16, default_tile=1)
@@ -165,7 +185,7 @@ class Maze:
                 #count2 += 1
             #count1 += 1
         #return(True)
-    def checkBounds(self, x, y, info=False):
+    def checkBounds1(self, x, y, info=False):
         good = False
         fR = 'na'
         fR2 = 'na'
@@ -198,6 +218,14 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
+    def checkBounds(self, x, y):
+        for y in range(8):
+            for x in range(8):
+                if self.board[y][x]:
+                    if hitsRect((self.marble.x+6, self.marble.y+6, 6),
+                        (x*16, y*16, 16, 16)):
+                        return False
+        return True
     def calcTouching(self):
         #note that this is really inneficent
         for x in range(self.marble.x, self.marble.x+radius):
