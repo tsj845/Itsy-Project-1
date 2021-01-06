@@ -22,12 +22,14 @@ t1 = time.monotonic()
 maze.move_marble([0, 0])
 tDif = time.monotonic() - t1
 
-tDel = round(tDif, 2)+0.2
+#tDel = round(tDif, 2)+0.2
 
-while True:
+tDel = 0.1
+
+while False:
   if sense.gyro[0]*3>0.5 or sense.gyro[0]*3<-0.5:
-    app.tilt[0] -= 3*sense.gyro[0]
+    app.tilt[0] = -3*sense.gyro[0]
   if sense.gyro[1]*3>0.5 or sense.gyro[1]*3<-0.5:
-    app.tilt[1] += 3*sense.gyro[1]
+    app.tilt[1] = 3*sense.gyro[1]
   maze.move_marble(app.tilt)
   time.sleep(tDel)
