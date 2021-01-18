@@ -258,8 +258,8 @@ class Maze:
                 pass#break
             v = False
             m1 = 6
-            if p == 1:
-                m1 = round(self.marbleRadius/2)
+            #if p == 1:
+            #    m1 = round(self.marbleRadius/2)
             if self.speed_y > 0:#+self.marbleRadius*2:
                 for yp in range(self.marble.y-self.marbleRadius*2+m1, new_y-self.marbleRadius*2+m1):
                     print(yp, 'yp ny>')
