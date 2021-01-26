@@ -31,10 +31,10 @@ n = 1
 
 """
 while True:
-  if sense.gyro[0]*n>0.5 or sense.gyro[0]*n<-0.5:
-    app.tilt[0] -= n*sense.gyro[0]
-  if sense.gyro[1]*n>0.5 or sense.gyro[1]*n<-0.5:
-    app.tilt[1] += n*sense.gyro[1]
+  if True:#sense.gyro[0]*n>0.5 or sense.gyro[0]*n<-0.5:
+    app.tilt[0] = n*sense.gyro[0]
+  if True:#sense.gyro[1]*n>0.5 or sense.gyro[1]*n<-0.5:
+    app.tilt[1] = n*sense.gyro[1]
   maze.move_marble(app.tilt)
   time.sleep(0.01)
-"""
+#"""
