@@ -204,7 +204,7 @@ class Maze:
         if info and not good:
             return fR + fR2
         return good
-    def pixelColor(self, xp, yp, xd, yd):
+    def pixelColor(self, xp, yp):
         table = {
             128:7,
             112:6,
@@ -220,11 +220,11 @@ class Maze:
         for i in range(8):
             c = i * 16 + 16
             if xC == -1:
-                if c >= xp + (self.marbleRadius * 2)*xd:
+                if c >= xp:
                     #print(c, 'xC', i)
                     xC = table[c]
             if yC == -1:
-                if c >= yp + (self.marbleRadius * 2)*yd + self.marbleRadius * yd * 2:
+                if c >= yp:
                     #print(c, 'yC', i)
                     yC = table[c]
         #print(yC, xC, self.tiles[yC*8+xC], 'tile x y v', xp, yp, ' x y p')
@@ -254,54 +254,44 @@ class Maze:
         new_y = self.marble.y + round(self.speed_y)
         threshold = 3
         for p in range(2):
-            if abs(round(self.speed_y)) < threshold:
-                pass#break
             v = False
-            m1 = 6
-            #if p == 1:
-            #    m1 = round(self.marbleRadius/2)
-            if self.speed_y > 0:#+self.marbleRadius*2:
-                for yp in range(self.marble.y-self.marbleRadius*2+m1, new_y-self.marbleRadius*2+m1):
-                    print(yp, 'yp ny>')
-                    print(self.pixelColor(self.marble.x-self.marbleRadius+m1, yp-self.marbleRadius*2, 1, 1))
-                    if self.pixelColor(self.marble.x-self.marbleRadius+m1, yp-self.marbleRadius*2, 1, 1) == 0:
-                        new_y = yp-1#-self.marbleRadius
-                        #new_y = self.marble.y
-                        print(new_y, 'newy')
+            if self.speed_y > 0:
+                for yp in range(self.marble.y+14, new_y+14):
+                    #print(yp, 'yp ny>')
+                    #print(self.pixelColor(self.marble.x, yp))
+                    if self.pixelColor(self.marble.x, yp) == 0:
+                        new_y = yp-15
+                        #print(new_y, 'newy')
                         v = True
                         break
-            else:#if new_y < self.marble.y:
-                for yp in range(new_y-m1, self.marble.y-m1):
-                    print(yp, 'yp ny<')
-                    print(self.pixelColor(self.marble.x+self.marbleRadius-m1, yp-self.marbleRadius*2, 1, -1))
-                    if self.pixelColor(self.marble.x+self.marbleRadius-m1, yp, 1, -1) == 0:
-                        new_y = yp+1+self.marbleRadius
-                        #new_y = self.marble.y
-                        print(new_y, 'newy')
+            else:
+                for yp in range(new_y, self.marble.y):
+                    #print(yp, 'yp ny<')
+                    #print(self.pixelColor(self.marble.x, yp))
+                    if self.pixelColor(self.marble.x, yp) == 0:
+                        new_y = yp+1
+                        #print(new_y, 'newy')
                         v = True
                         break
             if v:
                 break
         for p in range(2):
-            if abs(round(self.speed_x)) < threshold:
-                break
             v = False
-            m1 = 0
-            if p == 1:
-                m1 = round(self.marbleRadius/2)
-            if self.speed_x > 0:#+self.marbleRadius*2:
-                for xp in range(self.marble.x-self.marbleRadius*2+m1, new_x-self.marbleRadius*2+m1):
+            if self.speed_x > 0:
+                for xp in range(self.marble.x+14, new_x+14):
                     #print(xp, 'xp nx>')
-                    if self.pixelColor(xp-self.marbleRadius*2, self.marble.y-self.marbleRadius+m1, 1, 1) == 0:
-                        new_x = xp-1#-self.marbleRadius
+                    #print(self.pixelColor(xp, self.marble.y))
+                    if self.pixelColor(xp, self.marble.y) == 0:
+                        new_x = xp-15
                         #print(new_x, 'newx')
                         v = True
                         break
-            else:#if new_x < self.marble.x:
-                for xp in range(new_x-m1, self.marble.x-m1):
+            else:
+                for xp in range(new_x, self.marble.x):
                     #print(xp, 'xp nx<')
-                    if self.pixelColor(xp, self.marble.y+self.marbleRadius-m1, 1, 1) == 0:
-                        new_x = xp+1+self.marbleRadius
+                    #print(self.pixelColor(xp, self.marble.y))
+                    if self.pixelColor(xp, self.marble.y) == 0:
+                        new_x = xp+1
                         #print(new_x, 'newx')
                         v = True
                         break
