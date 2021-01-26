@@ -255,21 +255,22 @@ class Maze:
         threshold = 3
         for p in range(2):
             v = False
+            mod = 3*p
             if self.speed_y > 0:
-                for yp in range(self.marble.y+14, new_y+14):
+                for yp in range(self.marble.y+14-mod, new_y+14-mod):
                     #print(yp, 'yp ny>')
                     #print(self.pixelColor(self.marble.x, yp))
                     if self.pixelColor(self.marble.x, yp) == 0:
-                        new_y = yp-15
+                        new_y = yp-15+mod
                         #print(new_y, 'newy')
                         v = True
                         break
             else:
-                for yp in range(new_y, self.marble.y):
+                for yp in range(new_y+mod, self.marble.y+mod):
                     #print(yp, 'yp ny<')
                     #print(self.pixelColor(self.marble.x, yp))
                     if self.pixelColor(self.marble.x, yp) == 0:
-                        new_y = yp+1
+                        new_y = yp+1-mod
                         #print(new_y, 'newy')
                         v = True
                         break
@@ -277,21 +278,22 @@ class Maze:
                 break
         for p in range(2):
             v = False
+            mod = 3*p
             if self.speed_x > 0:
-                for xp in range(self.marble.x+14, new_x+14):
+                for xp in range(self.marble.x+14-mod, new_x+14-mod):
                     #print(xp, 'xp nx>')
                     #print(self.pixelColor(xp, self.marble.y))
                     if self.pixelColor(xp, self.marble.y) == 0:
-                        new_x = xp-15
+                        new_x = xp-15+mod
                         #print(new_x, 'newx')
                         v = True
                         break
             else:
-                for xp in range(new_x, self.marble.x):
+                for xp in range(new_x+mod, self.marble.x+mod):
                     #print(xp, 'xp nx<')
                     #print(self.pixelColor(xp, self.marble.y))
                     if self.pixelColor(xp, self.marble.y) == 0:
-                        new_x = xp+1
+                        new_x = xp+1-mod
                         #print(new_x, 'newx')
                         v = True
                         break
